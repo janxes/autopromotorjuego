@@ -309,34 +309,34 @@ export default function App() {
       <main className="flex-1 pb-16">
         {/* TAB 1: ADVENTURE (Reigns Card + House Visualizer + My Project) */}
         {activeTab === 'adventure' && (
-          <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6">
+          <div className="max-w-2xl mx-auto px-3 py-2.5 sm:py-3.5 space-y-3 sm:space-y-3.5">
             {/* View Switcher: «Mi futura casa» vs «Mi proyecto» */}
             <div className="flex items-center justify-center">
-              <div className="inline-flex p-1 rounded-2xl bg-slate-200/80 border border-slate-300 text-xs sm:text-sm font-bold shadow-2xs">
+              <div className="inline-flex p-1 rounded-xl bg-slate-200/80 border border-slate-300 text-xs font-bold shadow-2xs">
                 <button
                   onClick={() => setActiveSubView('house')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                     activeSubView === 'house'
                       ? 'bg-white text-slate-900 shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <Home className="w-4 h-4 text-emerald-700" />
-                  <span>«Mi futura casa» (Evolución visual)</span>
+                  <Home className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>«Mi futura casa»</span>
                 </button>
 
                 <button
                   onClick={() => setActiveSubView('project')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                     activeSubView === 'project'
                       ? 'bg-white text-slate-900 shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <FileText className="w-4 h-4 text-sky-700" />
-                  <span>«Mi proyecto» (Balance y Decisiones)</span>
+                  <FileText className="w-3.5 h-3.5 text-sky-700" />
+                  <span>«Mi proyecto»</span>
                   {history.length > 0 && (
-                    <span className="w-5 h-5 rounded-full bg-slate-900 text-white text-[10px] flex items-center justify-center font-bold">
+                    <span className="w-4 h-4 rounded-full bg-slate-900 text-white text-[9px] flex items-center justify-center font-bold">
                       {history.length}
                     </span>
                   )}
@@ -346,7 +346,7 @@ export default function App() {
 
             {/* SUB-VIEW 1: MI FUTURA CASA */}
             {activeSubView === 'house' && (
-              <div className="space-y-6 animate-in fade-in duration-200">
+              <div className="space-y-3 sm:space-y-3.5 animate-in fade-in duration-200">
                 {/* Visualizer Piece: The parcel transforms into a home with each decision */}
                 <HouseVisualizer stage={houseStage} />
 
@@ -418,9 +418,9 @@ export default function App() {
                         </strong>
                       </div>
                       <div>
-                        <span className="text-slate-500 block">Blower Door:</span>
+                        <span className="text-slate-500 block">Hermetismo (Cero fugas):</span>
                         <strong className="text-emerald-700 font-bold">
-                          n50: {indicators.n50BlowerDoor} ren/h
+                          {indicators.n50BlowerDoor} ren/h (Excelente)
                         </strong>
                       </div>
                     </div>
@@ -478,7 +478,7 @@ export default function App() {
                   />
                 ) : lastConsequence ? (
                   /* Consequence & Dialogue Reaction Card */
-                  <div className="w-full max-w-lg mx-auto bg-white rounded-3xl border-2 border-slate-200 shadow-lg p-6 sm:p-7 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                  <div className="w-full max-w-lg mx-auto bg-white rounded-2xl border-2 border-slate-200 shadow-md p-4 sm:p-5 space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
                         Consecuencia de tu elección
@@ -488,18 +488,18 @@ export default function App() {
                       </span>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-sm text-slate-800 leading-relaxed font-medium">
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
                       {lastConsequence.text}
                     </div>
 
                     {/* Reaction message from partner/architect */}
                     {lastConsequence.partnerReaction && (
-                      <div className="p-3.5 rounded-2xl bg-sky-50 border border-sky-200 flex items-start gap-3">
-                        <span className="text-xl shrink-0" role="img" aria-label="mensaje">
+                      <div className="p-2.5 rounded-xl bg-sky-50 border border-sky-200 flex items-start gap-2.5">
+                        <span className="text-base shrink-0" role="img" aria-label="mensaje">
                           📩
                         </span>
                         <div>
-                          <span className="text-[11px] font-bold text-sky-900 block">
+                          <span className="text-[10px] font-bold text-sky-900 block">
                             Tu Pareja (Álex):
                           </span>
                           <p className="text-xs text-sky-950 font-medium italic mt-0.5">
@@ -510,35 +510,35 @@ export default function App() {
                     )}
 
                     {/* Metric shifts */}
-                    <div className="flex items-center gap-2 text-xs flex-wrap">
+                    <div className="flex items-center gap-1.5 text-xs flex-wrap">
                       {lastConsequence.deltaPresupuesto < 0 && (
-                        <span className="px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800 font-bold">
+                        <span className="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 font-bold text-[11px]">
                           Desvío: {lastConsequence.deltaPresupuesto} €
                         </span>
                       )}
                       {lastConsequence.deltaSemanas > 0 && (
-                        <span className="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 font-bold">
-                          +{lastConsequence.deltaSemanas} semanas
+                        <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 font-bold text-[11px]">
+                          +{lastConsequence.deltaSemanas} sem
                         </span>
                       )}
                       {lastConsequence.deltaEstres > 0 && (
-                        <span className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold">
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-bold text-[11px]">
                           +{lastConsequence.deltaEstres}% estrés
                         </span>
                       )}
                       {lastConsequence.choice.isPassivhausWay && (
-                        <span className="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-bold">
-                          ✓ Certeza Passivhaus
+                        <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[11px]">
+                          ✓ Certeza de Catálogo
                         </span>
                       )}
                     </div>
 
                     <button
                       onClick={handleContinueAfterConsequence}
-                      className="w-full py-3.5 px-4 rounded-2xl bg-slate-900 hover:bg-black text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition"
+                      className="w-full py-2.5 sm:py-3 px-4 rounded-xl bg-slate-900 hover:bg-black text-white font-extrabold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5 transition"
                     >
-                      <span>Continuar hacia el siguiente hito</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <span>Avanzar al siguiente hito</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 ) : (

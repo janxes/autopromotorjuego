@@ -132,29 +132,29 @@ export const MyProjectView: React.FC<MyProjectViewProps> = ({
 
       {/* Technical Documents Shelf */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs space-y-4">
-        <h3 className="text-lg font-bold text-slate-900 pb-3 border-b border-slate-100">
+        <h3 className="text-base font-bold text-slate-900 pb-2.5 border-b border-slate-100">
           Carpeta de Documentación Técnica
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-            <span className="font-semibold text-slate-700">Gemelo Digital BIM</span>
-            <span className="text-emerald-700 font-bold">✓ Coordinado 3D</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span className="font-semibold text-slate-700">Maqueta 3D de Precisión</span>
+            <span className="text-emerald-700 font-bold">✓ Cero improvisación</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-            <span className="font-semibold text-slate-700">Madera Técnica Sostenible</span>
-            <span className="text-emerald-700 font-bold">✓ Certificación PEFC</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span className="font-semibold text-slate-700">Madera Técnica en Taller</span>
+            <span className="text-emerald-700 font-bold">✓ Seco y protegido</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-            <span className="font-semibold text-slate-700">Protocolo Blower Door</span>
-            <span className="text-emerald-700 font-bold">✓ n50 ≤ 0.6 h⁻¹</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span className="font-semibold text-slate-700">Test de Inflado Hermético</span>
+            <span className="text-emerald-700 font-bold">✓ Cero corrientes</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-            <span className="font-semibold text-slate-700">Ventilación VMC Doble Flujo</span>
-            <span className="text-emerald-700 font-bold">✓ Recuperador &gt;90%</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <span className="font-semibold text-slate-700">Pulmón de Aire Filtrado</span>
+            <span className="text-emerald-700 font-bold">✓ 90% calor retenido</span>
           </div>
         </div>
       </div>

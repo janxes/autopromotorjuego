@@ -374,7 +374,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               {facturaEnergetica} €/mes
             </div>
             <div className="text-[11px] text-slate-500 truncate">
-              Blower Door: {blowerDoorN50} h⁻¹
+              Hermetismo: {blowerDoorN50} ren/h
             </div>
           </div>
         </div>
