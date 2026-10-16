@@ -1,43 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { GameState, TurnMessage, ChoiceOption } from './types/game';
 import {
-  INITIAL_GAME_STATE,
-  formatStatusPanelMarkdown,
-  GAME_SCENARIOS_V2,
-  generateStressBar,
-  updateStressStatus,
-} from './utils/gameLogic';
+  GameIndicators,
+  HouseStage,
+  CardChoice,
+  GameHistoryEntry,
+  PlayerProfile,
+} from './types/game';
+import {
+  REIGNS_SCENARIOS,
+  calculatePlayerProfile,
+} from './utils/reignsScenarioData';
 import { HUDHeader } from './components/HUDHeader';
-import { GameNarrativeView } from './components/GameNarrativeView';
+import { ReignsCard } from './components/ReignsCard';
+import { HouseVisualizer } from './components/HouseVisualizer';
+import { MyProjectView } from './components/MyProjectView';
+import { TechnicalTipCard } from './components/TechnicalTipCard';
+import { ParallelUniverseModal } from './components/ParallelUniverseModal';
 import { LCCSimulatorView } from './components/LCCSimulatorView';
 import { BlowerDoorLabView } from './components/BlowerDoorLabView';
 import { CatalogView } from './components/CatalogView';
 import { CertificateModal } from './components/CertificateModal';
+import {
+  Home,
+  FileText,
+  RotateCcw,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  Award,
+  Layers,
+  BookOpen,
+  LineChart,
+} from 'lucide-react';
+import confetti from 'canvas-confetti';
 
-const STORAGE_KEY = 'autopromotor_odisea_save_v3';
+const STORAGE_KEY = 'autopromotor_reigns_save_v4';
+
+const INITIAL_INDICATORS: GameIndicators = {
+  presupuestoRestante: 250000,
+  presupuestoInicial: 250000,
+  desvioEuros: 0,
+  semanasTranscurridas: 0,
+  semanasPrevistas: 24,
+  estresPorcentaje: 10,
+  facturaEnergeticaMes: 35,
+  n50BlowerDoor: 0.45,
+};
 
 export default function App() {
-  const [gameState, setGameState] = useState<GameState>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        return JSON.parse(saved);
-      }
-    } catch (e) {
-      console.warn('Failed to load saved game state', e);
-    }
-    return INITIAL_GAME_STATE;
-  });
+  // Navigation & Subviews
+  const [activeTab, setActiveTab] = useState<
+    'adventure' | 'lcc' | 'blower' | 'catalog' | 'certificate'
+  >('adventure');
+  const [activeSubView, setActiveSubView] = useState<'house' | 'project'>('house');
 
-  const [activeTab, setActiveTab] = useState<'game' | 'lcc' | 'blower' | 'catalog' | 'certificate'>('game');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // Game Engine State
+  const [cardIndex, setCardIndex] = useState<number>(0);
+  const [houseStage, setHouseStage] = useState<HouseStage>(1);
+  const [indicators, setIndicators] = useState<GameIndicators>(INITIAL_INDICATORS);
+  const [history, setHistory] = useState<GameHistoryEntry[]>([]);
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [playerProfile, setPlayerProfile] = useState<PlayerProfile | null>(null);
 
-  // Accessibility States
+  // Interaction & Choice state
+  const [hoveredPreviewChoice, setHoveredPreviewChoice] = useState<CardChoice | null>(null);
+  const [pendingChoiceForTip, setPendingChoiceForTip] = useState<{
+    choice: CardChoice;
+    unselectedChoice: CardChoice;
+  } | null>(null);
+  const [lastConsequence, setLastConsequence] = useState<{
+    text: string;
+    partnerReaction?: string;
+    choice: CardChoice;
+    deltaPresupuesto: number;
+    deltaSemanas: number;
+    deltaEstres: number;
+  } | null>(null);
+
+  // Parallel Universe modal
+  const [parallelModalData, setParallelModalData] = useState<{
+    chosen: CardChoice;
+    alternative: CardChoice;
+  } | null>(null);
+
+  // Accessibility state
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
   const [highContrast, setHighContrast] = useState<boolean>(false);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
 
-  // Update root font size for accessibility
+  // Root font size listener
   useEffect(() => {
     const sizeMap = {
       normal: '16px',
@@ -47,7 +98,7 @@ export default function App() {
     document.documentElement.style.setProperty('--app-font-size', sizeMap[fontSize]);
   }, [fontSize]);
 
-  // Update high contrast class
+  // High contrast listener
   useEffect(() => {
     if (highContrast) {
       document.body.classList.add('high-contrast');
@@ -56,41 +107,50 @@ export default function App() {
     }
   }, [highContrast]);
 
-  // Initial welcome message with Calibration phase
-  const [messages, setMessages] = useState<TurnMessage[]>(() => {
-    const level0 = GAME_SCENARIOS_V2[0];
-    const initialStatus = formatStatusPanelMarkdown(INITIAL_GAME_STATE);
-    return [
-      {
-        id: 'msg-calib-init',
-        role: 'assistant',
-        text: level0.gameMasterNarration,
-        statusPanelMarkdown: initialStatus,
-        timestamp: Date.now(),
-        choices: level0.options,
-        gameStateSnapshot: INITIAL_GAME_STATE,
-      },
-    ];
-  });
+  // Load from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.indicators && typeof parsed.cardIndex === 'number') {
+          setIndicators(parsed.indicators);
+          setCardIndex(parsed.cardIndex);
+          setHouseStage(parsed.houseStage || 1);
+          setHistory(parsed.history || []);
+          setIsGameOver(parsed.isGameOver || false);
+          setPlayerProfile(parsed.playerProfile || null);
+        }
+      }
+    } catch (e) {
+      console.warn('Could not restore saved game state', e);
+    }
+  }, []);
 
   // Save to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          indicators,
+          cardIndex,
+          houseStage,
+          history,
+          isGameOver,
+          playerProfile,
+        })
+      );
     } catch (e) {
       // ignore
     }
-  }, [gameState]);
+  }, [indicators, cardIndex, houseStage, history, isGameOver, playerProfile]);
 
-  const lastAssistantMsg = [...messages].reverse().find((m) => m.role === 'assistant');
-  const currentChoices = lastAssistantMsg?.choices || [];
+  const currentCard = REIGNS_SCENARIOS[cardIndex] || REIGNS_SCENARIOS[0];
 
-  // Text-To-Speech helper
+  // Speech synthesis
   const handleToggleSpeech = () => {
-    if (!('speechSynthesis' in window)) {
-      alert('Tu navegador no soporta lectura de voz');
-      return;
-    }
+    if (!('speechSynthesis' in window)) return;
 
     if (isSpeaking) {
       window.speechSynthesis.cancel();
@@ -98,26 +158,12 @@ export default function App() {
       return;
     }
 
-    if (!lastAssistantMsg?.text) return;
+    const textToSpeak = lastConsequence
+      ? `${lastConsequence.text}. ${lastConsequence.partnerReaction || ''}`
+      : `${currentCard.character.role} ${currentCard.character.name} dice: ${currentCard.prompt}. Opción A: ${currentCard.leftChoice.label}. Opción B: ${currentCard.rightChoice.label}.`;
 
     window.speechSynthesis.cancel();
-    const cleanText = lastAssistantMsg.text.replace(/[*#_`]/g, '');
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'es-ES';
-    utterance.rate = 1.0;
-
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
-  };
-
-  const handleSpeakText = (text: string) => {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const cleanText = text.replace(/[*#_`]/g, '');
-    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'es-ES';
     utterance.rate = 1.0;
     utterance.onend = () => setIsSpeaking(false);
@@ -132,353 +178,123 @@ export default function App() {
       setIsSpeaking(false);
     }
     localStorage.removeItem(STORAGE_KEY);
-    setGameState(INITIAL_GAME_STATE);
-    const level0 = GAME_SCENARIOS_V2[0];
-    const initialStatus = formatStatusPanelMarkdown(INITIAL_GAME_STATE);
-    setMessages([
-      {
-        id: `msg-restart-${Date.now()}`,
-        role: 'assistant',
-        text: level0.gameMasterNarration,
-        statusPanelMarkdown: initialStatus,
-        timestamp: Date.now(),
-        choices: level0.options,
-        gameStateSnapshot: INITIAL_GAME_STATE,
-      },
-    ]);
-    setActiveTab('game');
+    setIndicators(INITIAL_INDICATORS);
+    setCardIndex(0);
+    setHouseStage(1);
+    setHistory([]);
+    setIsGameOver(false);
+    setPlayerProfile(null);
+    setLastConsequence(null);
+    setPendingChoiceForTip(null);
+    setHoveredPreviewChoice(null);
+    setActiveTab('adventure');
+    setActiveSubView('house');
   };
 
-  const handleRewindChoice = () => {
-    if (!gameState.rewindStateBackup) return;
+  // User chooses an option on the Reigns card
+  const handleChoose = (choice: CardChoice) => {
+    setHoveredPreviewChoice(null);
+    const unselectedChoice =
+      choice.id === currentCard.leftChoice.id ? currentCard.rightChoice : currentCard.leftChoice;
 
-    const restoredState: GameState = {
-      ...(gameState.rewindStateBackup as GameState),
-      alertaActiva: undefined,
-    };
-
-    setGameState(restoredState);
-
-    const levelDef = GAME_SCENARIOS_V2[restoredState.level];
-    const statusMarkdown = formatStatusPanelMarkdown(restoredState);
-
-    const rewindNoticeMsg: TurnMessage = {
-      id: `ai-rewind-${Date.now()}`,
-      role: 'assistant',
-      text: `🔄 **¡Decisión Rebobinada con Éxito!**
-
-Has evitado la trampa a tiempo antes de que los sobrecostes y los retrasos quedaran sellados en el contrato. Volvemos al punto de decisión de: **${levelDef?.faseNombre || 'Nivel ' + restoredState.level}**.
-
-Elige ahora la opción constructiva con certidumbre técnica:`,
-      statusPanelMarkdown: statusMarkdown,
-      timestamp: Date.now(),
-      choices: levelDef?.options || [],
-      gameStateSnapshot: restoredState,
-    };
-
-    setMessages((prev) => [...prev, rewindNoticeMsg]);
-  };
-
-  const handleSelectChoice = async (choice: ChoiceOption) => {
-    const userMsg: TurnMessage = {
-      id: `user-${Date.now()}`,
-      role: 'user',
-      text: choice.label,
-      timestamp: Date.now(),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setIsLoading(true);
-
-    const backupState = { ...gameState };
-
-    try {
-      const response = await fetch('/api/game/turn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          history: messages.slice(-4),
-          userMessage: choice.label,
-          currentGameState: gameState,
-          selectedOption: choice,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const rawUpdated = data.updatedGameState;
-
-        const updatedState: GameState = {
-          ...gameState,
-          ...rawUpdated,
-          level: (rawUpdated.level ?? gameState.level) as 0 | 1 | 2 | 3 | 4 | 5,
-          faseNombre: rawUpdated.faseNombre || `Nivel ${rawUpdated.level || gameState.level}`,
-          estresPorcentaje: rawUpdated.estresPorcentaje ?? gameState.estresPorcentaje,
-          estresBarra: generateStressBar(rawUpdated.estresPorcentaje ?? gameState.estresPorcentaje),
-          estadoEstres:
-            rawUpdated.estadoEstres ||
-            updateStressStatus(rawUpdated.estresPorcentaje ?? gameState.estresPorcentaje),
-          facturaEnergeticaMes: rawUpdated.facturaEnergeticaMes ?? gameState.facturaEnergeticaMes,
-          confortYAire: rawUpdated.confortYAire ?? gameState.confortYAire,
-          turnNumber: gameState.turnNumber + 1,
-          alertaActiva: data.alertaAutopromotor,
-          rewindStateBackup: choice.isBadDecision ? backupState : undefined,
-          gameOver: rawUpdated.level >= 5 || rawUpdated.gameOver,
-        };
-
-        setGameState(updatedState);
-
-        const aiMsg: TurnMessage = {
-          id: `ai-${Date.now()}`,
-          role: 'assistant',
-          text: data.narration,
-          alertaAutopromotor: data.alertaAutopromotor,
-          statusPanelMarkdown: data.statusPanelMarkdown || formatStatusPanelMarkdown(updatedState),
-          timestamp: Date.now(),
-          choices: data.nextChoices || [],
-          gameStateSnapshot: updatedState,
-        };
-
-        setMessages((prev) => [...prev, aiMsg]);
-        setIsLoading(false);
-        return;
-      }
-    } catch (err) {
-      console.warn('API error caught, running deterministic scenario engine', err);
-    }
-
-    // Fallback script engine
-    executeScenarioStepV2(choice, backupState);
-    setIsLoading(false);
-  };
-
-  const executeScenarioStepV2 = (choice: ChoiceOption, backupState: GameState) => {
-    const currentLvl = gameState.level;
-
-    if (currentLvl === 0) {
-      const nextLevelDef = GAME_SCENARIOS_V2[1];
-      const updatedState: GameState = {
-        ...gameState,
-        level: 1,
-        levelName: nextLevelDef.title,
-        faseNombre: nextLevelDef.faseNombre,
-        calibration: {
-          ubicacionParcela: choice.label,
-          dormitorios: 3,
-          calibrado: true,
-        },
-        tiempoSemanas: 0,
-        turnNumber: 1,
-      };
-
-      setGameState(updatedState);
-      const statusMarkdown = formatStatusPanelMarkdown(updatedState);
-
-      const aiMsg: TurnMessage = {
-        id: `ai-lvl1-${Date.now()}`,
-        role: 'assistant',
-        text: `📍 **Parcela Calibrada:** ${choice.label}.
-
-${nextLevelDef.gameMasterNarration}`,
-        statusPanelMarkdown: statusMarkdown,
-        timestamp: Date.now(),
-        choices: nextLevelDef.options,
-        gameStateSnapshot: updatedState,
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
+    // If the choice has a technical warning tip, present the TechnicalTipCard first
+    if (choice.technicalTip) {
+      setPendingChoiceForTip({ choice, unselectedChoice });
       return;
     }
 
-    const currentScenario = GAME_SCENARIOS_V2[currentLvl];
-    const isBad = choice.isBadDecision || choice.letter === 'A';
-    const alertData = currentScenario?.badAlerts?.[choice.id];
-
-    if (isBad && alertData) {
-      const penalizacionEur = alertData.penalizacionPresupuesto;
-      const desvioEur = gameState.desvioAcumuladoEuros + penalizacionEur;
-      const desvioPorc = (desvioEur / gameState.presupuestoInicial) * 100;
-      const nuevoRestante = Math.max(0, gameState.presupuestoRestante - (35000 + penalizacionEur));
-      const nuevasSemanas = gameState.tiempoSemanas + alertData.penalizacionSemanas + 4;
-      const nuevoEstres = Math.min(100, gameState.estresPorcentaje + alertData.penalizacionEstres);
-
-      const badState: GameState = {
-        ...gameState,
-        presupuestoRestante: nuevoRestante,
-        desvioAcumuladoEuros: desvioEur,
-        desvioAcumuladoPorcentaje: desvioPorc,
-        tiempoSemanas: nuevasSemanas,
-        estresPorcentaje: nuevoEstres,
-        estresBarra: generateStressBar(nuevoEstres),
-        estadoEstres: updateStressStatus(nuevoEstres),
-        facturaEnergeticaMes: currentLvl >= 3 ? 180 : gameState.facturaEnergeticaMes,
-        confortYAire: currentLvl >= 3 ? 'Corrientes y Condensación en marcos' : gameState.confortYAire,
-        blowerDoorN50: currentLvl >= 3 ? 5.8 : gameState.blowerDoorN50,
-        vmcInstalado: currentLvl === 4 ? false : gameState.vmcInstalado,
-        modeloConstructivo: 'Obra Húmeda Tradicional',
-        huellaCarbono: +32.0,
-        alertaActiva: alertData,
-        rewindStateBackup: backupState,
-        turnNumber: gameState.turnNumber + 1,
-      };
-
-      setGameState(badState);
-      const statusMarkdown = formatStatusPanelMarkdown(badState);
-
-      const aiMsg: TurnMessage = {
-        id: `ai-alert-${Date.now()}`,
-        role: 'assistant',
-        text: `⚠️ Has tomado la decisión tradicional con partidas abiertas o recortes aparentes. El impacto en obra es implacable:`,
-        alertaAutopromotor: alertData,
-        statusPanelMarkdown: statusMarkdown,
-        timestamp: Date.now(),
-        choices: [
-          {
-            id: `L${currentLvl}_CONTINUE_WITH_PENALTY`,
-            label: '1. Asumir el golpe y continuar con la penalización',
-            description: 'Aceptar el sobrecoste, las semanas extra de alquiler y seguir adelante.',
-          },
-          {
-            id: `L${currentLvl}_REWIND_TO_SAFETY`,
-            label: '2. Rebobinar y elegir la opción constructiva correcta',
-            description: 'Volver atrás, blindar el presupuesto y optar por el estándar Passivhaus industrializado.',
-            isRewindAction: true,
-          },
-        ],
-        gameStateSnapshot: badState,
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
-      return;
-    }
-
-    const nextLvl = Math.min(5, currentLvl + 1) as 1 | 2 | 3 | 4 | 5;
-    const nextScenario = GAME_SCENARIOS_V2[nextLvl];
-
-    const isGameOver = nextLvl === 5 && choice.id === 'L5_VER_BALANCE';
-
-    const advancedState: GameState = {
-      ...gameState,
-      level: nextLvl,
-      levelName: nextScenario.title,
-      faseNombre: nextScenario.faseNombre,
-      tiempoSemanas: gameState.tiempoSemanas + 4,
-      presupuestoRestante: Math.max(0, gameState.presupuestoRestante - 28000),
-      alertaActiva: undefined,
-      rewindStateBackup: undefined,
-      gameOver: isGameOver,
-      gameVictory: isGameOver && gameState.desvioAcumuladoPorcentaje <= 5,
-      turnNumber: gameState.turnNumber + 1,
-    };
-
-    setGameState(advancedState);
-    const statusMarkdown = formatStatusPanelMarkdown(advancedState);
-
-    const aiMsg: TurnMessage = {
-      id: `ai-next-${Date.now()}`,
-      role: 'assistant',
-      text: nextScenario.gameMasterNarration,
-      statusPanelMarkdown: statusMarkdown,
-      timestamp: Date.now(),
-      choices: nextScenario.options,
-      gameStateSnapshot: advancedState,
-    };
-
-    setMessages((prev) => [...prev, aiMsg]);
+    // Otherwise apply directly
+    applyChoiceCommit(choice, unselectedChoice);
   };
 
-  const handleSubmitCustomMessage = async (text: string) => {
-    const userMsg: TurnMessage = {
-      id: `user-${Date.now()}`,
-      role: 'user',
-      text,
-      timestamp: Date.now(),
+  // Confirmed commit of the choice
+  const applyChoiceCommit = (choice: CardChoice, unselectedChoice: CardChoice) => {
+    setPendingChoiceForTip(null);
+
+    const deltaEur = choice.deltaPresupuesto;
+    const nuevoRestante = Math.max(0, indicators.presupuestoRestante + deltaEur);
+    const nuevoDesvio = deltaEur < 0 ? indicators.desvioEuros + Math.abs(deltaEur) : indicators.desvioEuros;
+    const nuevasSemanas = indicators.semanasTranscurridas + choice.deltaSemanas;
+    const nuevoEstres = Math.min(100, Math.max(0, indicators.estresPorcentaje + choice.deltaEstres));
+    const nuevaFactura = Math.max(25, indicators.facturaEnergeticaMes + choice.deltaFactura);
+    const nuevoN50 = choice.isPassivhausWay
+      ? indicators.n50BlowerDoor
+      : currentCard.level >= 4
+      ? 5.4
+      : indicators.n50BlowerDoor;
+
+    const nextIndicators: GameIndicators = {
+      presupuestoInicial: indicators.presupuestoInicial,
+      presupuestoRestante: nuevoRestante,
+      desvioEuros: nuevoDesvio,
+      semanasTranscurridas: nuevasSemanas,
+      semanasPrevistas: indicators.semanasPrevistas,
+      estresPorcentaje: nuevoEstres,
+      facturaEnergeticaMes: nuevaFactura,
+      n50BlowerDoor: nuevoN50,
     };
 
-    setMessages((prev) => [...prev, userMsg]);
-    setIsLoading(true);
+    setIndicators(nextIndicators);
+    setHouseStage(currentCard.houseStageAfter);
 
-    try {
-      const response = await fetch('/api/game/turn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          history: messages.slice(-4),
-          userMessage: text,
-          currentGameState: gameState,
-        }),
+    const newHistoryEntry: GameHistoryEntry = {
+      cardId: currentCard.id,
+      chosenOptionId: choice.id,
+      chosenLabel: choice.label,
+      consequenceText: choice.consequenceText,
+      partnerReaction: choice.partnerReaction,
+      indicatorsSnapshot: nextIndicators,
+      unselectedChoice,
+      isPassivhausWay: choice.isPassivhausWay,
+    };
+
+    const nextHistory = [...history, newHistoryEntry];
+    setHistory(nextHistory);
+
+    // Show consequence banner
+    setLastConsequence({
+      text: choice.consequenceText,
+      partnerReaction: choice.partnerReaction,
+      choice,
+      deltaPresupuesto: choice.deltaPresupuesto,
+      deltaSemanas: choice.deltaSemanas,
+      deltaEstres: choice.deltaEstres,
+    });
+  };
+
+  // Continue to next card after reviewing consequence
+  const handleContinueAfterConsequence = () => {
+    setLastConsequence(null);
+
+    const nextIndex = cardIndex + 1;
+    if (nextIndex >= REIGNS_SCENARIOS.length) {
+      // Completed all cards!
+      setIsGameOver(true);
+      const profile = calculatePlayerProfile(history);
+      setPlayerProfile(profile);
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 },
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        const rawUpdated = data.updatedGameState;
-
-        const updatedState: GameState = {
-          ...gameState,
-          ...rawUpdated,
-          level: (rawUpdated.level ?? gameState.level) as 0 | 1 | 2 | 3 | 4 | 5,
-          faseNombre: rawUpdated.faseNombre || gameState.faseNombre,
-          estresPorcentaje: rawUpdated.estresPorcentaje ?? gameState.estresPorcentaje,
-          estresBarra: generateStressBar(rawUpdated.estresPorcentaje ?? gameState.estresPorcentaje),
-          estadoEstres:
-            rawUpdated.estadoEstres ||
-            updateStressStatus(rawUpdated.estresPorcentaje ?? gameState.estresPorcentaje),
-          turnNumber: gameState.turnNumber + 1,
-        };
-
-        setGameState(updatedState);
-
-        const aiMsg: TurnMessage = {
-          id: `ai-${Date.now()}`,
-          role: 'assistant',
-          text: data.narration,
-          alertaAutopromotor: data.alertaAutopromotor,
-          statusPanelMarkdown: data.statusPanelMarkdown || formatStatusPanelMarkdown(updatedState),
-          timestamp: Date.now(),
-          choices: data.nextChoices || [],
-          gameStateSnapshot: updatedState,
-        };
-
-        setMessages((prev) => [...prev, aiMsg]);
-        setIsLoading(false);
-        return;
-      }
-    } catch (e) {
-      console.warn('API error during custom message, fallback response', e);
+    } else {
+      setCardIndex(nextIndex);
     }
-
-    const localAdvisor = `El Aparejador te responde con claridad:
-
-"${text}"
-
-En obra nunca hay atajos mágicos. Si abres partidas sin precio cerrado, el constructor transferirá la inflación de materiales a tus certificaciones bancarias. Con edificación industrializada de madera técnica por catálogo, el gemelo digital BIM congela las tolerancias y la fábrica entrega precio cerrado notarial.
-
-Elige la opción para este nivel:`;
-
-    const statusMarkdown = formatStatusPanelMarkdown(gameState);
-    const currentScenario = GAME_SCENARIOS_V2[gameState.level];
-
-    const aiMsg: TurnMessage = {
-      id: `ai-custom-${Date.now()}`,
-      role: 'assistant',
-      text: localAdvisor,
-      statusPanelMarkdown: statusMarkdown,
-      timestamp: Date.now(),
-      choices: currentScenario?.options || [],
-      gameStateSnapshot: gameState,
-    };
-
-    setMessages((prev) => [...prev, aiMsg]);
-    setIsLoading(false);
   };
+
+  const formatoEuros = (val: number) =>
+    new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(val) + ' €';
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
-      {/* Accessible Header with Top-Bar Contract */}
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-700 selection:text-white">
+      {/* 4 Fixed Indicators Header */}
       <HUDHeader
-        state={gameState}
+        indicators={indicators}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => {
+          if (tab === 'game') setActiveTab('adventure');
+          else setActiveTab(tab);
+        }}
         onRestart={handleRestart}
         fontSize={fontSize}
         setFontSize={setFontSize}
@@ -486,50 +302,333 @@ Elige la opción para este nivel:`;
         setHighContrast={setHighContrast}
         isSpeaking={isSpeaking}
         onToggleSpeech={handleToggleSpeech}
+        previewChoice={hoveredPreviewChoice}
       />
 
       {/* Main Container */}
       <main className="flex-1 pb-16">
-        {activeTab === 'game' && (
-          <GameNarrativeView
-            state={gameState}
-            messages={messages}
-            currentChoices={currentChoices}
-            onSelectChoice={handleSelectChoice}
-            onSubmitCustomMessage={handleSubmitCustomMessage}
-            onRewindChoice={handleRewindChoice}
-            isLoading={isLoading}
-            onOpenLCC={() => setActiveTab('lcc')}
-            onOpenCatalog={() => setActiveTab('catalog')}
-            onSpeakText={handleSpeakText}
-          />
+        {/* TAB 1: ADVENTURE (Reigns Card + House Visualizer + My Project) */}
+        {activeTab === 'adventure' && (
+          <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6">
+            {/* View Switcher: «Mi futura casa» vs «Mi proyecto» */}
+            <div className="flex items-center justify-center">
+              <div className="inline-flex p-1 rounded-2xl bg-slate-200/80 border border-slate-300 text-xs sm:text-sm font-bold shadow-2xs">
+                <button
+                  onClick={() => setActiveSubView('house')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
+                    activeSubView === 'house'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Home className="w-4 h-4 text-emerald-700" />
+                  <span>«Mi futura casa» (Evolución visual)</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveSubView('project')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${
+                    activeSubView === 'project'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <FileText className="w-4 h-4 text-sky-700" />
+                  <span>«Mi proyecto» (Balance y Decisiones)</span>
+                  {history.length > 0 && (
+                    <span className="w-5 h-5 rounded-full bg-slate-900 text-white text-[10px] flex items-center justify-center font-bold">
+                      {history.length}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* SUB-VIEW 1: MI FUTURA CASA */}
+            {activeSubView === 'house' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                {/* Visualizer Piece: The parcel transforms into a home with each decision */}
+                <HouseVisualizer stage={houseStage} />
+
+                {/* GAME OVER CARD: DELIVERY DAY! */}
+                {isGameOver ? (
+                  <div className="max-w-lg mx-auto bg-white rounded-3xl border-2 border-emerald-500 shadow-xl p-6 sm:p-8 text-center space-y-5 animate-in zoom-in-95 duration-300">
+                    <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-3xl shadow-xs">
+                      🏡
+                    </div>
+
+                    <div>
+                      <span className="text-xs font-black uppercase tracking-widest text-emerald-800 block">
+                        ¡Hito Conquistado!
+                      </span>
+                      <h3 className="text-2xl font-black text-slate-900 tracking-tight mt-1">
+                        Has llegado al Día de la Mudanza
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Tu casa de madera técnica está terminada, con llaves entregadas y confort certificado.
+                      </p>
+                    </div>
+
+                    {/* Profile Badge */}
+                    {playerProfile && (
+                      <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-left space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">{playerProfile.badgeEmoji}</span>
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">
+                              Perfil del Autopromotor:
+                            </span>
+                            <h4 className="text-base font-black text-emerald-950">
+                              {playerProfile.title}
+                            </h4>
+                          </div>
+                        </div>
+                        <p className="text-xs text-emerald-900/90 leading-relaxed font-medium">
+                          {playerProfile.description}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Summary metrics */}
+                    <div className="grid grid-cols-2 gap-2 text-left text-xs bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                      <div>
+                        <span className="text-slate-500 block">Desvío final:</span>
+                        <strong
+                          className={
+                            indicators.desvioEuros === 0
+                              ? 'text-emerald-700 font-bold'
+                              : 'text-rose-700 font-bold'
+                          }
+                        >
+                          {indicators.desvioEuros === 0
+                            ? '0 € (Blindado)'
+                            : `+${formatoEuros(indicators.desvioEuros)}`}
+                        </strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block">Tiempo final:</span>
+                        <strong className="text-slate-800 font-bold">
+                          Semana {indicators.semanasTranscurridas} (vs {indicators.semanasPrevistas})
+                        </strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block">Factura mensual:</span>
+                        <strong className="text-emerald-700 font-bold">
+                          {indicators.facturaEnergeticaMes} €/mes
+                        </strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block">Blower Door:</span>
+                        <strong className="text-emerald-700 font-bold">
+                          n50: {indicators.n50BlowerDoor} ren/h
+                        </strong>
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-col gap-2.5 pt-2">
+                      <button
+                        onClick={() => setActiveTab('certificate')}
+                        className="w-full py-3.5 px-4 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition"
+                      >
+                        <Award className="w-4 h-4" />
+                        <span>Ver Certificado Oficial de Idoneidad</span>
+                      </button>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => setActiveTab('lcc')}
+                          className="py-2.5 px-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition"
+                        >
+                          <LineChart className="w-3.5 h-3.5 text-slate-600" />
+                          <span>Simular 30 Años</span>
+                        </button>
+
+                        <button
+                          onClick={() => setActiveTab('catalog')}
+                          className="py-2.5 px-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition"
+                        >
+                          <BookOpen className="w-3.5 h-3.5 text-slate-600" />
+                          <span>Catálogo Casas</span>
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={handleRestart}
+                        className="text-xs text-slate-500 hover:text-rose-700 font-semibold pt-1 flex items-center justify-center gap-1"
+                      >
+                        <RotateCcw className="w-3 h-3" />
+                        <span>Empezar de nuevo con otra estrategia</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : pendingChoiceForTip ? (
+                  /* Technical Tip Card: Real jobsite warning and chance to review or commit */
+                  <TechnicalTipCard
+                    warning={pendingChoiceForTip.choice.technicalTip!.warning}
+                    advice={pendingChoiceForTip.choice.technicalTip!.advice}
+                    quote={pendingChoiceForTip.choice.technicalTip!.quote}
+                    onKeepDecision={() =>
+                      applyChoiceCommit(
+                        pendingChoiceForTip.choice,
+                        pendingChoiceForTip.unselectedChoice
+                      )
+                    }
+                    onReviewDecision={() => setPendingChoiceForTip(null)}
+                  />
+                ) : lastConsequence ? (
+                  /* Consequence & Dialogue Reaction Card */
+                  <div className="w-full max-w-lg mx-auto bg-white rounded-3xl border-2 border-slate-200 shadow-lg p-6 sm:p-7 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        Consecuencia de tu elección
+                      </span>
+                      <span className="text-xs font-bold text-slate-700">
+                        {lastConsequence.choice.label}
+                      </span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-sm text-slate-800 leading-relaxed font-medium">
+                      {lastConsequence.text}
+                    </div>
+
+                    {/* Reaction message from partner/architect */}
+                    {lastConsequence.partnerReaction && (
+                      <div className="p-3.5 rounded-2xl bg-sky-50 border border-sky-200 flex items-start gap-3">
+                        <span className="text-xl shrink-0" role="img" aria-label="mensaje">
+                          📩
+                        </span>
+                        <div>
+                          <span className="text-[11px] font-bold text-sky-900 block">
+                            Tu Pareja (Álex):
+                          </span>
+                          <p className="text-xs text-sky-950 font-medium italic mt-0.5">
+                            {lastConsequence.partnerReaction}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Metric shifts */}
+                    <div className="flex items-center gap-2 text-xs flex-wrap">
+                      {lastConsequence.deltaPresupuesto < 0 && (
+                        <span className="px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800 font-bold">
+                          Desvío: {lastConsequence.deltaPresupuesto} €
+                        </span>
+                      )}
+                      {lastConsequence.deltaSemanas > 0 && (
+                        <span className="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 font-bold">
+                          +{lastConsequence.deltaSemanas} semanas
+                        </span>
+                      )}
+                      {lastConsequence.deltaEstres > 0 && (
+                        <span className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold">
+                          +{lastConsequence.deltaEstres}% estrés
+                        </span>
+                      )}
+                      {lastConsequence.choice.isPassivhausWay && (
+                        <span className="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-bold">
+                          ✓ Certeza Passivhaus
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={handleContinueAfterConsequence}
+                      className="w-full py-3.5 px-4 rounded-2xl bg-slate-900 hover:bg-black text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition"
+                    >
+                      <span>Continuar hacia el siguiente hito</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  /* REIGNS MAIN CARD COMPONENT */
+                  <ReignsCard
+                    card={currentCard}
+                    onChoose={handleChoose}
+                    onPreviewChoice={setHoveredPreviewChoice}
+                  />
+                )}
+              </div>
+            )}
+
+            {/* SUB-VIEW 2: MI PROYECTO (Documentation, timeline, and Parallel Universe) */}
+            {activeSubView === 'project' && (
+              <MyProjectView
+                indicators={indicators}
+                history={history}
+                onOpenParallelUniverse={(chosen, unselected) =>
+                  setParallelModalData({ chosen, alternative: unselected })
+                }
+              />
+            )}
+          </div>
         )}
 
+        {/* TAB 2: LCC 30 AÑOS */}
         {activeTab === 'lcc' && <LCCSimulatorView />}
 
+        {/* TAB 3: BLOWER DOOR TEST */}
         {activeTab === 'blower' && <BlowerDoorLabView />}
 
+        {/* TAB 4: CATÁLOGO */}
         {activeTab === 'catalog' && <CatalogView />}
 
+        {/* TAB 5: CERTIFICADO */}
         {activeTab === 'certificate' && (
           <CertificateModal
-            state={gameState}
+            state={{
+              level: 5,
+              levelName: 'Certificado Final',
+              faseNombre: 'Certificado de Idoneidad',
+              presupuestoInicial: indicators.presupuestoInicial,
+              presupuestoRestante: indicators.presupuestoRestante,
+              desvioAcumuladoEuros: indicators.desvioEuros,
+              desvioAcumuladoPorcentaje:
+                (indicators.desvioEuros / indicators.presupuestoInicial) * 100,
+              tiempoSemanas: indicators.semanasTranscurridas,
+              tiempoPrevistoSemanas: indicators.semanasPrevistas,
+              estresPorcentaje: indicators.estresPorcentaje,
+              estresBarra: `[${'■'.repeat(Math.round(indicators.estresPorcentaje / 10))}]`,
+              estadoEstres: indicators.estresPorcentaje < 30 ? 'En Control' : 'Estrés de Obra',
+              facturaEnergeticaMes: indicators.facturaEnergeticaMes,
+              confortYAire: 'Passivhaus Confort',
+              confortPuntos: indicators.n50BlowerDoor <= 0.6 ? 90 : 50,
+              huellaCarbono: -24,
+              modeloConstructivo: 'Madera Técnica Passivhaus',
+              blowerDoorN50: indicators.n50BlowerDoor,
+              vmcInstalado: true,
+              tripleVidrio: true,
+              turnNumber: history.length,
+              gameOver: true,
+              gameVictory: indicators.desvioEuros <= 5000,
+            }}
             onRestart={handleRestart}
-            onClose={() => setActiveTab('game')}
+            onClose={() => setActiveTab('adventure')}
           />
         )}
       </main>
 
-      {/* Clean Footer */}
+      {/* Parallel Universe Modal */}
+      {parallelModalData && (
+        <ParallelUniverseModal
+          chosenChoice={parallelModalData.chosen}
+          alternativeChoice={parallelModalData.alternative}
+          onExploreAlternative={() => setParallelModalData(null)}
+          onClose={() => setParallelModalData(null)}
+        />
+      )}
+
+      {/* Clean Democratic Footer */}
       <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 font-normal">
           <span>
-            La Odisea del Autopromotor · Asesoría pedagógica en madera técnica y Passivhaus por catálogo
+            La Odisea del Autopromotor · Asesoría pedagógica interactiva inspirada en Reigns y Democracia21
           </span>
           <div className="flex items-center gap-3 text-slate-400">
             <span>Accesibilidad WCAG AA</span>
             <span aria-hidden="true">·</span>
-            <span>Alta legibilidad tipográfica</span>
+            <span>Edificación industrializada de madera técnica</span>
           </div>
         </div>
       </footer>

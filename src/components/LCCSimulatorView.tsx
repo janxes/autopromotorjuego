@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { calculateLCC } from '../utils/gameLogic';
+import { LCCYearData } from '../types/game';
 import {
   TrendingUp,
   Zap,
@@ -38,12 +39,12 @@ export const LCCSimulatorView: React.FC = () => {
   const innerHeight = chartHeight - padding.top - padding.bottom;
 
   const maxVal = Math.max(
-    ...lcc.chartData.map((d) =>
+    ...lcc.chartData.map((d: LCCYearData) =>
       Math.max(d.costeAcumuladoTradicional, d.costeAcumuladoIndustrializado)
     )
   );
   const minVal = Math.min(
-    ...lcc.chartData.map((d) =>
+    ...lcc.chartData.map((d: LCCYearData) =>
       Math.min(d.costeAcumuladoTradicional, d.costeAcumuladoIndustrializado)
     )
   );
@@ -53,8 +54,8 @@ export const LCCSimulatorView: React.FC = () => {
   const getY = (val: number) =>
     padding.top + innerHeight - ((val - minVal) / (maxVal - minVal || 1)) * innerHeight;
 
-  const pointsTrad = lcc.chartData.map((d) => `${getX(d.year)},${getY(d.costeAcumuladoTradicional)}`).join(' ');
-  const pointsIndus = lcc.chartData.map((d) => `${getX(d.year)},${getY(d.costeAcumuladoIndustrializado)}`).join(' ');
+  const pointsTrad = lcc.chartData.map((d: LCCYearData) => `${getX(d.year)},${getY(d.costeAcumuladoTradicional)}`).join(' ');
+  const pointsIndus = lcc.chartData.map((d: LCCYearData) => `${getX(d.year)},${getY(d.costeAcumuladoIndustrializado)}`).join(' ');
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
@@ -335,8 +336,8 @@ export const LCCSimulatorView: React.FC = () => {
 
             {/* X Axis years */}
             {lcc.chartData
-              .filter((d) => d.year === 1 || d.year % 5 === 0 || d.year === years)
-              .map((d) => (
+              .filter((d: LCCYearData) => d.year === 1 || d.year % 5 === 0 || d.year === years)
+              .map((d: LCCYearData) => (
                 <text
                   key={d.year}
                   x={getX(d.year)}

@@ -1,6 +1,8 @@
 {
-  "name": "La Odisea del Autopromotor: De la Parcela al Hogar",
+  "name": "Juego del autopromotor",
   "description": "Juego de rol interactivo y simulador pedagógico de edificación industrializada de madera técnica y estándar Passivhaus por catálogo.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
