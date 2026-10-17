@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles, ShieldCheck, Clock, Brain, RotateCcw } from 'lucide-react';
+import { ArrowRight, RotateCcw } from 'lucide-react';
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -42,14 +42,38 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
       {/* Seth Godin Narrative Flow: Short, Punchy, Meaningful */}
       <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+        <p className="text-base sm:text-lg font-black text-slate-950 tracking-tight leading-snug">
+          Construye tu casa en cinco decisiones.
+        </p>
+
+        {/* Las dos voces en contraste */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-2">
+          <div className="p-3.5 rounded-2xl bg-rose-50/80 border border-rose-200/90 text-rose-950 space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-rose-800 block">
+              😈 El diablillo susurra:
+            </span>
+            <p className="text-xs sm:text-sm font-semibold italic text-rose-950">
+              «Empieza ya, luego lo vemos.»
+            </p>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 text-emerald-950 space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 block">
+              🛡️ Tu ángel asesor pregunta:
+            </span>
+            <p className="text-xs sm:text-sm font-semibold italic text-emerald-950">
+              «¿Está todo definido?»
+            </p>
+          </div>
+        </div>
+
         <p>
-          En <strong>3 minutos</strong>, recorrerás cinco momentos clave: de la parcela al hogar. Elige entre dos opciones y descubre cómo cambian tu presupuesto, las semanas, tu estrés y tu eficiencia energética.
+          <strong>Tú eliges.</strong> Observa cómo cambian tu dinero, las semanas y tu estrés en tiempo real:
         </p>
 
         {/* The 4 Core Variables Pill Grid - 1 column for (< 1080px), 4 columns for (>= 1080px) */}
         <div className="grid grid-cols-1 min-[1080px]:grid-cols-4 gap-2.5 py-1">
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
-            <span className="text-sm font-black text-slate-900 block">💰 Presupuesto</span>
+            <span className="text-sm font-black text-slate-900 block">💰 Dinero</span>
             <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Precios cerrados</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
@@ -61,21 +85,26 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Cero sorpresas</span>
           </div>
           <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/90 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
-            <span className="text-sm font-black text-emerald-950 block">⚡ Eficiencia Energética</span>
-            <span className="text-xs min-[1080px]:text-[10px] text-emerald-700 font-medium block">Confort y factura mínima</span>
+            <span className="text-sm font-black text-emerald-950 block">⚡ Eficiencia</span>
+            <span className="text-xs min-[1080px]:text-[10px] text-emerald-700 font-medium block">Factura mínima</span>
           </div>
         </div>
 
         {/* Seth Godin Highlight Callout: Freedom to experiment */}
-        <div className="p-4 rounded-2xl bg-amber-50/80 border-l-4 border-amber-500 text-amber-950 font-medium text-sm sm:text-base">
-          «Puedes equivocarte. Aquí sale barato. También puedes rectificar.»
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/85 border-l-4 border-amber-500 text-amber-950 space-y-1.5 shadow-2xs">
+          <p className="text-base sm:text-lg font-black text-amber-950 leading-snug">
+            «Aquí, equivocarse no cuesta una hipoteca.»
+          </p>
+          <p className="text-xs sm:text-sm text-amber-900/95 font-medium leading-relaxed">
+            Puedes equivocarte. Aquí sale gratis. También puedes rectificar y comparar qué habría ocurrido si hubieras tomado el otro camino.
+          </p>
         </div>
 
         <p>
-          No se trata de acertarlo todo. Se trata de descubrir qué preguntar, qué dejar definido y qué no confiar al «ya lo veremos».
+          En <strong>tres minutos</strong> descubrirás qué preguntar antes de construir, qué dejar cerrado en contrato y qué no confiar jamás a la improvisación.
         </p>
 
-        <p className="font-semibold text-slate-900">
+        <p className="font-bold text-slate-950">
           Al terminar, tendrás algo más útil que una puntuación: mejores preguntas para construir tu casa.
         </p>
       </div>
