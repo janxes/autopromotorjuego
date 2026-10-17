@@ -43,22 +43,26 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       {/* Seth Godin Narrative Flow: Short, Punchy, Meaningful */}
       <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
         <p>
-          En <strong>3 minutos</strong>, recorrerás cinco momentos clave: de la parcela al hogar. Elige entre dos opciones y descubre cómo cambian tu presupuesto, las semanas y tu estrés.
+          En <strong>3 minutos</strong>, recorrerás cinco momentos clave: de la parcela al hogar. Elige entre dos opciones y descubre cómo cambian tu presupuesto, las semanas, tu estrés y tu eficiencia energética.
         </p>
 
-        {/* The 3 Core Variables Pill Grid */}
-        <div className="grid grid-cols-3 gap-2 py-1">
-          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-0.5">
-            <span className="text-xs sm:text-sm font-black text-slate-900 block">💰 Presupuesto</span>
-            <span className="text-[10px] text-slate-500 block">Precios cerrados</span>
+        {/* The 4 Core Variables Pill Grid - 1 column for (< 1080px), 4 columns for (>= 1080px) */}
+        <div className="grid grid-cols-1 min-[1080px]:grid-cols-4 gap-2.5 py-1">
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
+            <span className="text-sm font-black text-slate-900 block">💰 Presupuesto</span>
+            <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Precios cerrados</span>
           </div>
-          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-0.5">
-            <span className="text-xs sm:text-sm font-black text-slate-900 block">⏱️ Semanas</span>
-            <span className="text-[10px] text-slate-500 block">Plazos en seco</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
+            <span className="text-sm font-black text-slate-900 block">⏱️ Semanas</span>
+            <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Plazos en seco</span>
           </div>
-          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-0.5">
-            <span className="text-xs sm:text-sm font-black text-slate-900 block">🧠 Estrés</span>
-            <span className="text-[10px] text-slate-500 block">Cero sorpresas</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
+            <span className="text-sm font-black text-slate-900 block">🧠 Estrés</span>
+            <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Cero sorpresas</span>
+          </div>
+          <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/90 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
+            <span className="text-sm font-black text-emerald-950 block">⚡ Eficiencia Energética</span>
+            <span className="text-xs min-[1080px]:text-[10px] text-emerald-700 font-medium block">Confort y factura mínima</span>
           </div>
         </div>
 

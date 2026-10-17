@@ -20,6 +20,7 @@ import {
   Zap,
   ExternalLink,
   Sparkles,
+  Type,
 } from 'lucide-react';
 import { HighlightedIndicatorId, FeedbackTone } from '../hooks/useDecisionFeedback';
 
@@ -120,6 +121,8 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
   onOpenWelcome,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [textSizePopoverOpen, setTextSizePopoverOpen] = useState(false);
+  const [restartConfirmOpen, setRestartConfirmOpen] = useState(false);
 
   const formatoEuros = (val: number) =>
     new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(val) + ' €';
@@ -183,20 +186,209 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
           </div>
         </div>
 
-        {/* 3 Horizontal Stripes Menu Button */}
-        <div className="relative">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className={`p-2 rounded-xl border text-slate-800 transition flex items-center justify-center focus:outline-hidden cursor-pointer ${
-              menuOpen
-                ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                : 'bg-slate-100 hover:bg-slate-200 border-slate-300'
-            }`}
-            aria-label="Abrir menú de navegación"
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </button>
+        {/* Right Header Action Buttons: Accessibility, New Game, and Menu */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Quick Text Size Accessibility Button */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setTextSizePopoverOpen(!textSizePopoverOpen);
+                setMenuOpen(false);
+                setRestartConfirmOpen(false);
+              }}
+              className={`p-2 rounded-xl border text-slate-800 transition flex items-center justify-center gap-1 focus:outline-hidden cursor-pointer ${
+                textSizePopoverOpen
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-300'
+              }`}
+              title="Accesibilidad y ampliación de texto"
+              aria-label="Accesibilidad y ampliación de texto"
+              aria-expanded={textSizePopoverOpen}
+            >
+              <Type className="w-4 h-4" />
+              <span className="text-[10px] font-black uppercase tracking-tight hidden sm:inline">
+                {fontSize === 'normal' && 'A'}
+                {fontSize === 'medium' && 'A+'}
+                {fontSize === 'large' && 'A++'}
+                {fontSize === 'xlarge' && 'Max'}
+              </span>
+            </button>
+
+            {/* Accessibility / Text Size Popover */}
+            {textSizePopoverOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setTextSizePopoverOpen(false)}
+                />
+                <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-2.5">
+                  <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
+                    <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Type className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>Ampliación de texto</span>
+                    </span>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded">
+                      {fontSize === 'normal' && '100%'}
+                      {fontSize === 'medium' && '115%'}
+                      {fontSize === 'large' && '130%'}
+                      {fontSize === 'xlarge' && '150%'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-1 p-0.5 bg-slate-100 rounded-xl border border-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => setFontSize('normal')}
+                      className={`py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'normal'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      }`}
+                      title="100% - Normal"
+                    >
+                      A
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFontSize('medium')}
+                      className={`py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'medium'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      }`}
+                      title="115% - Grande"
+                    >
+                      A+
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFontSize('large')}
+                      className={`py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'large'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      }`}
+                      title="130% - Muy grande"
+                    >
+                      A++
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFontSize('xlarge')}
+                      className={`py-1.5 rounded-lg text-xs font-black transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'xlarge'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      }`}
+                      title="150% - Máximo accesible"
+                    >
+                      Max
+                    </button>
+                  </div>
+
+                  {/* Contrast shortcut */}
+                  <div className="pt-2 border-t border-slate-100">
+                    <button
+                      onClick={() => setHighContrast(!highContrast)}
+                      className={`w-full px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition cursor-pointer ${
+                        highContrast
+                          ? 'bg-amber-100 border-amber-300 text-amber-950 font-bold'
+                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <Sun className="w-3.5 h-3.5 text-amber-600" />
+                        <span>Modo alto contraste</span>
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-500">
+                        {highContrast ? 'ON' : 'OFF'}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Quick Restart / Nueva Partida Button */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setRestartConfirmOpen(!restartConfirmOpen);
+                setMenuOpen(false);
+                setTextSizePopoverOpen(false);
+              }}
+              className={`p-2 rounded-xl border text-slate-800 transition flex items-center justify-center gap-1.5 focus:outline-hidden cursor-pointer ${
+                restartConfirmOpen
+                  ? 'bg-rose-50 text-rose-700 border-rose-300'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-300'
+              }`}
+              title="Empezar nueva partida"
+              aria-label="Empezar nueva partida"
+            >
+              <RotateCcw className="w-4 h-4 text-slate-700" />
+              <span className="text-[11px] font-bold hidden md:inline text-slate-700">
+                Nueva partida
+              </span>
+            </button>
+
+            {/* Restart Confirmation Popover */}
+            {restartConfirmOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setRestartConfirmOpen(false)}
+                />
+                <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-3.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-2.5">
+                  <div className="space-y-1">
+                    <span className="text-xs font-bold text-slate-900 block">
+                      ¿Empezar nueva partida?
+                    </span>
+                    <p className="text-[11px] text-slate-500 leading-snug">
+                      Reiniciarás el presupuesto, el calendario y tus decisiones para empezar de cero.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <button
+                      onClick={() => setRestartConfirmOpen(false)}
+                      className="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-semibold cursor-pointer"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={() => {
+                        onRestart();
+                        setRestartConfirmOpen(false);
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-2xs cursor-pointer"
+                    >
+                      Sí, reiniciar
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* 3 Horizontal Stripes Menu Button */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+                setTextSizePopoverOpen(false);
+                setRestartConfirmOpen(false);
+              }}
+              className={`p-2 rounded-xl border text-slate-800 transition flex items-center justify-center focus:outline-hidden cursor-pointer ${
+                menuOpen
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-300'
+              }`}
+              aria-label="Abrir menú de navegación"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
 
           {/* Backdrop to close menu when clicking outside */}
           {menuOpen && (
@@ -425,6 +617,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
           )}
         </div>
       </div>
+    </div>
 
       {/* Four Reigns Indicators Always in the Same Position - matched to main section */}
       <div className="w-full bg-slate-50/90 border-t border-slate-200 py-2">
