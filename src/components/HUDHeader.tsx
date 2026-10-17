@@ -161,33 +161,33 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
       {/* Top Bar matched to the exact width of the 'main' section */}
       <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-3 relative">
         {/* Brand / Logo */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <div className="h-8 sm:h-9 flex items-center justify-center shrink-0">
+        <div className="flex items-center gap-2 min-w-0 flex-1 sm:flex-initial">
+          <div className="h-7 sm:h-9 flex items-center justify-center shrink-0">
             <img
               src="/images/Logomedgonnofondo.png"
               alt="Medgon Passivhaus"
-              className="h-8 sm:h-9 w-auto max-w-[110px] object-contain"
+              className="h-7 sm:h-9 w-auto max-w-[80px] sm:max-w-[110px] object-contain shrink-0"
             />
           </div>
-          <div>
+          <div className="min-w-0">
             <a
               href="#top"
               onClick={(e) => {
                 e.preventDefault();
                 setActiveTab('adventure');
               }}
-              className="text-sm sm:text-base font-black tracking-tight text-slate-900 hover:text-emerald-800 transition block leading-tight"
+              className="text-xs sm:text-base font-black tracking-tight text-slate-900 hover:text-emerald-800 transition block leading-tight truncate"
             >
               La Odisea del Autopromotor
             </a>
-            <span className="text-[10px] text-slate-500 font-medium block">
+            <span className="text-[9px] sm:text-[10px] text-slate-500 font-medium block truncate">
               El juego de construir tu mejor casa.
             </span>
           </div>
         </div>
 
         {/* Right Header Action Buttons: Accessibility, New Game, and Menu */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Quick Text Size Accessibility Button */}
           <div className="relative">
             <button
@@ -214,14 +214,14 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               </span>
             </button>
 
-            {/* Accessibility / Text Size Popover */}
+            {/* Accessibility / Text Size Popover - locked strictly to mobile screen bounds */}
             {textSizePopoverOpen && (
               <>
                 <div
-                  className="fixed inset-0 z-40"
+                  className="fixed inset-0 z-40 bg-black/10 backdrop-blur-2xs"
                   onClick={() => setTextSizePopoverOpen(false)}
                 />
-                <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-2.5">
+                <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-14 sm:top-full mt-1.5 sm:mt-2 max-w-[calc(100vw-1.5rem)] sm:w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-2.5 mx-auto">
                   <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
                     <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <Type className="w-3.5 h-3.5 text-emerald-700" />
@@ -239,7 +239,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                     <button
                       type="button"
                       onClick={() => setFontSize('normal')}
-                      className={`py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                      className={`py-1.5 px-1 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer min-w-0 truncate ${
                         fontSize === 'normal'
                           ? 'bg-slate-900 text-white shadow-2xs'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
@@ -251,7 +251,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                     <button
                       type="button"
                       onClick={() => setFontSize('medium')}
-                      className={`py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                      className={`py-1.5 px-1 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer min-w-0 truncate ${
                         fontSize === 'medium'
                           ? 'bg-slate-900 text-white shadow-2xs'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
@@ -263,7 +263,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                     <button
                       type="button"
                       onClick={() => setFontSize('large')}
-                      className={`py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                      className={`py-1.5 px-1 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer min-w-0 truncate ${
                         fontSize === 'large'
                           ? 'bg-slate-900 text-white shadow-2xs'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
@@ -275,7 +275,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                     <button
                       type="button"
                       onClick={() => setFontSize('xlarge')}
-                      className={`py-1.5 rounded-lg text-xs font-black transition flex items-center justify-center cursor-pointer ${
+                      className={`py-1.5 px-1 rounded-lg text-xs font-black transition flex items-center justify-center cursor-pointer min-w-0 truncate ${
                         fontSize === 'xlarge'
                           ? 'bg-slate-900 text-white shadow-2xs'
                           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
@@ -332,14 +332,14 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               </span>
             </button>
 
-            {/* Restart Confirmation Popover */}
+            {/* Restart Confirmation Popover - safely bounded on mobile */}
             {restartConfirmOpen && (
               <>
                 <div
-                  className="fixed inset-0 z-40"
+                  className="fixed inset-0 z-40 bg-black/10 backdrop-blur-2xs"
                   onClick={() => setRestartConfirmOpen(false)}
                 />
-                <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-3.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-2.5">
+                <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-14 sm:top-full mt-1.5 sm:mt-2 max-w-[calc(100vw-1.5rem)] sm:w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-2.5 mx-auto">
                   <div className="space-y-1">
                     <span className="text-xs font-bold text-slate-900 block">
                       ¿Empezar nueva partida?
@@ -393,14 +393,14 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
           {/* Backdrop to close menu when clicking outside */}
           {menuOpen && (
             <div
-              className="fixed inset-0 z-40"
+              className="fixed inset-0 z-40 bg-black/10 backdrop-blur-2xs"
               onClick={() => setMenuOpen(false)}
             />
           )}
 
-          {/* Dropdown Menu */}
+          {/* Dropdown Menu - safely bounded on mobile */}
           {menuOpen && (
-            <div className="absolute top-full right-0 mt-2 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl border border-slate-200 p-2.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-14 sm:top-full mt-1.5 sm:mt-2 max-w-[calc(100vw-1.5rem)] sm:w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[85vh] overflow-y-auto mx-auto">
               {/* Navigation items */}
               <div className="space-y-1 pb-2 border-b border-slate-100">
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 block">
