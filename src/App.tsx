@@ -82,19 +82,20 @@ export default function App() {
     alternative: CardChoice;
   } | null>(null);
 
-  // Accessibility state
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
+  // Accessibility state with 4 text enlargement levels
+  const [fontSize, setFontSize] = useState<'normal' | 'medium' | 'large' | 'xlarge'>('normal');
   const [highContrast, setHighContrast] = useState<boolean>(false);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
 
-  // Root font size listener
+  // Root font size listener: scales all typography proportionally across the app
   useEffect(() => {
-    const sizeMap = {
+    const sizeMap: Record<'normal' | 'medium' | 'large' | 'xlarge', string> = {
       normal: '16px',
-      large: '18px',
-      xlarge: '20px',
+      medium: '18.5px',
+      large: '21px',
+      xlarge: '24px',
     };
-    document.documentElement.style.setProperty('--app-font-size', sizeMap[fontSize]);
+    document.documentElement.style.setProperty('--app-font-size', sizeMap[fontSize] || '16px');
   }, [fontSize]);
 
   // High contrast listener

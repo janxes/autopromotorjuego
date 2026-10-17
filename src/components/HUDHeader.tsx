@@ -82,8 +82,8 @@ interface HUDHeaderProps {
   activeTab: 'game' | 'adventure' | 'lcc' | 'blower' | 'catalog' | 'certificate';
   setActiveTab: (tab: 'game' | 'adventure' | 'lcc' | 'blower' | 'catalog' | 'certificate') => void;
   onRestart: () => void;
-  fontSize: 'normal' | 'large' | 'xlarge';
-  setFontSize: (size: 'normal' | 'large' | 'xlarge') => void;
+  fontSize: 'normal' | 'medium' | 'large' | 'xlarge';
+  setFontSize: (size: 'normal' | 'medium' | 'large' | 'xlarge') => void;
   highContrast: boolean;
   setHighContrast: (val: boolean) => void;
   isSpeaking: boolean;
@@ -328,29 +328,65 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                   </span>
                 </button>
 
-                {/* Font size */}
-                <div className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-700">
-                  <span>Tamaño texto</span>
-                  <div className="flex items-center border border-slate-200 rounded-lg p-0.5 bg-slate-50 font-bold">
+                {/* Font size - 4 accessible enlargement options */}
+                <div className="px-3 py-2 space-y-1.5 text-xs text-slate-700">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-800">Tamaño de texto</span>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded">
+                      {fontSize === 'normal' && '100% · Estándar'}
+                      {fontSize === 'medium' && '115% · Grande'}
+                      {fontSize === 'large' && '130% · Muy grande'}
+                      {fontSize === 'xlarge' && '150% · Máximo'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-1 p-0.5 bg-slate-100 rounded-xl border border-slate-200">
                     <button
+                      type="button"
                       onClick={() => setFontSize('normal')}
-                      className={`px-2 py-0.5 rounded text-xs cursor-pointer ${
+                      title="Tamaño estándar (100% - 16px)"
+                      className={`py-1 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
                         fontSize === 'normal'
-                          ? 'bg-white shadow-2xs text-slate-900'
-                          : 'text-slate-500'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                       }`}
                     >
                       A
                     </button>
                     <button
-                      onClick={() => setFontSize('large')}
-                      className={`px-2 py-0.5 rounded text-sm cursor-pointer ${
-                        fontSize === 'large'
-                          ? 'bg-white shadow-2xs text-slate-900'
-                          : 'text-slate-500'
+                      type="button"
+                      onClick={() => setFontSize('medium')}
+                      title="Tamaño grande (115% - 18.5px)"
+                      className={`py-1 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'medium'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                       }`}
                     >
                       A+
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFontSize('large')}
+                      title="Tamaño muy grande (130% - 21px)"
+                      className={`py-1 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'large'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      }`}
+                    >
+                      A++
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFontSize('xlarge')}
+                      title="Tamaño máximo accesible (150% - 24px)"
+                      className={`py-1 rounded-lg text-xs font-black transition flex items-center justify-center cursor-pointer ${
+                        fontSize === 'xlarge'
+                          ? 'bg-slate-900 text-white shadow-2xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      }`}
+                    >
+                      Max
                     </button>
                   </div>
                 </div>
