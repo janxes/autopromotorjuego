@@ -6,6 +6,7 @@ import {
   Bath,
   ArrowRight,
   ShieldCheck,
+  ExternalLink,
 } from 'lucide-react';
 
 interface CatalogModel {
@@ -110,12 +111,23 @@ export const CatalogView: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl text-center shrink-0">
-            <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider block">
-              Garantía Contractual
-            </span>
-            <strong className="text-2xl font-black text-emerald-800 block mt-1">0% Desvíos</strong>
-            <span className="text-xs text-emerald-700 block mt-0.5">Penalización por retraso</span>
+          <div className="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl text-center shrink-0 flex flex-col justify-between items-center gap-2">
+            <div>
+              <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider block">
+                Garantía Contractual
+              </span>
+              <strong className="text-2xl font-black text-emerald-800 block mt-1">0% Desvíos</strong>
+              <span className="text-xs text-emerald-700 block mt-0.5">Penalización por retraso</span>
+            </div>
+            <a
+              href="https://webprumedgon.netlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs transition no-underline cursor-pointer"
+            >
+              <span>Ver Web Oficial</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
         </div>
 

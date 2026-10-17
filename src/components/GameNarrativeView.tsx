@@ -207,6 +207,22 @@ export const GameNarrativeView: React.FC<GameNarrativeViewProps> = ({
                     {latestAssistantMsg.alertaAutopromotor.alternativaIndustrializada}
                   </p>
                 </div>
+
+                {latestAssistantMsg.alertaAutopromotor.analogia && (
+                  <div className="pt-2 border-t border-amber-200">
+                    <span className="font-bold text-amber-900 block text-xs uppercase tracking-wider">
+                      💡 Analogía explicada:
+                    </span>
+                    <p className="mt-0.5 text-slate-800 italic">
+                      «{latestAssistantMsg.alertaAutopromotor.analogia}»
+                    </p>
+                    {latestAssistantMsg.alertaAutopromotor.adaptableACadaCaso && (
+                      <div className="mt-2 p-2.5 rounded-lg bg-amber-100/60 text-xs text-amber-950">
+                        <strong>🎯 Adaptable a tu caso:</strong> {latestAssistantMsg.alertaAutopromotor.adaptableACadaCaso}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}

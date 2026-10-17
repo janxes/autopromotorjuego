@@ -40,7 +40,26 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     character: CHARACTERS.partner,
     messageType: 'chat',
     prompt: '«La parcela nos encanta y tiene unas vistas increíbles. Manolo nos dice: "Fírmame este número rápido en un folio; lo que vaya saliendo en el terreno lo vemos sobre la marcha, vosotros no os preocupéis". ¿Firmamos ya?»',
-    detailContext: 'Ubicación atractiva, pero aún no has pedido la ficha técnica del ayuntamiento ni sabes si el subsuelo es roca o arcilla blanda.',
+    detailContext: 'Ubicación atractiva, pero aún no has pedido la ficha técnica del ayuntamiento ni sabes si el subsuelo es roca dura o arcilla blanda.',
+    phaseAnalogy: {
+      title: 'El billete de avión tirado de precio con sorpresas al embarcar',
+      metaphor: 'Comprar un vuelo por 15 € sin mirar la letra pequeña: al llegar a la puerta te cobran 70 € por la maleta, 35 € por sentarte y 40 € por el bolso.',
+      explanation: 'El "ya lo iremos viendo en el terreno" funciona igual: te atraen con un precio bajo en un papel, pero la primera piedra que encuentra la excavadora te cuesta miles de euros porque "no estaba en el presupuesto orientativo".',
+      cases: [
+        {
+          label: 'Si tu terreno tiene pendiente o sospecha de roca',
+          tip: 'Exige siempre un estudio geotécnico previo. Una pala picando roca sin preverlo cuesta entre 5.000 € y 12.000 € que el banco no te financiará.'
+        },
+        {
+          label: 'Si tu presupuesto de hipoteca va justo',
+          tip: 'Nunca firmes un presupuesto abierto. En el catálogo industrializado la cimentación se calcula con cotas milimétricas antes de mover un solo terrón.'
+        },
+        {
+          label: 'Si estás en zona urbana con casas vecinas',
+          tip: 'Pide la ficha urbanística para verificar retranqueos de linde y servidumbres antes de comprometer ningún pago.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'L1_IMPULSO',
       label: 'Aceptar el "sobre la marcha"',
@@ -53,8 +72,24 @@ export const REIGNS_SCENARIOS: GameCard[] = [
       partnerReaction: '«Oye... el del tractor dice que o le pagamos el suplemento de picado de roca o se marcha a otra obra. Ya empezamos con los sobrecostes...»',
       technicalTip: {
         warning: 'La trampa del "sobre la marcha" es el anzuelo clásico para atraparte con un precio bajo que luego se multiplica.',
-        advice: 'Antes de firmar nada, exige siempre la ficha urbanística municipal y un estudio del terreno. En el catálogo industrializado el diseño se adapta a la parcela antes de meter una pala.',
+        advice: 'Antes de firmar nada, exige siempre la ficha técnica municipal y el estudio del terreno. En el catálogo industrializado el diseño se adapta a la parcela antes de meter una pala.',
         quote: '«El "ya lo iremos viendo" es la partida más cara de cualquier obra tradicional».',
+        analogy: {
+          title: 'El billete de avión ganga con suplementos trampa',
+          story: 'Comprar un vuelo low-cost por 15 € parece un chollo, hasta que en la puerta de embarque te cobran 70 € por la maleta de mano y 40 € por imprimir la tarjeta. En la obra tradicional, el papel rápido de Manolo es ese billete trampa: el precio real aparece cuando la máquina ya está en tu parcela y ya no puedes decir que no.',
+          lesson: 'Nunca firmes nada sin conocer la composición del subsuelo y la cota exacta de apoyo.',
+          adaptableAdvice: 'Para tu caso: antes de solicitar la hipoteca, pide un informe geotécnico y una topografía; te costará menos de 1.200 € y te blindará contra sobrecostes de más de 10.000 €.',
+          cases: [
+            {
+              label: 'Caso con pendiente pronunciada',
+              tip: 'Opta por una cimentación por pilotes o muros de contención calculados previamente en maqueta para no disparar el hormigón.'
+            },
+            {
+              label: 'Caso con suelo arcilloso expansivo',
+              tip: 'Las zapatas convencionales agrietan paredes en verano; la madera industrializada reparte cargas ligeras reduciendo cimientos.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses comprobado la información técnica antes:',
@@ -94,6 +129,25 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     messageType: 'surprise',
     prompt: '«Cambio de planes: en mi trabajo han aprobado teletrabajo permanente. Necesitamos un rincón de trabajo luminoso y con silencio total. Manolo propone: "Metemos 25 m² más de ladrillo y luego ya arreglaremos la hipoteca"».',
     detailContext: 'Una necesidad nueva cuando el proyecto está empezando a diseñarse.',
+    phaseAnalogy: {
+      title: 'Comprar una furgoneta industrial solo por si un día llevas una maleta de más',
+      metaphor: 'No te compras un camión de mudanzas para ir a trabajar a diario solo porque una vez al mes llevas equipaje extra; organizas mejor el maletero.',
+      explanation: 'Construir 25 m² más de ladrillo infla la hipoteca 28.000 € y te obliga a calentar, limpiar y pagar impuestos por ese espacio durante 30 años. Un espacio polivalente con tabiques móviles resuelve el despacho sin gastar un euro más.',
+      cases: [
+        {
+          label: 'Si teletrabajas con llamadas frecuentes',
+          tip: 'Prioriza el aislamiento acústico y la luz natural en un dormitorio de uso mixto antes que inflar los metros cuadrados totales.'
+        },
+        {
+          label: 'Si piensas en tener hijos en el futuro',
+          tip: 'Elige distribuciones con tabiquería seca adaptable: puedes transformar un espacio diáfano en dos cuartos cuando lo necesites.'
+        },
+        {
+          label: 'Si tu capacidad de endeudamiento está al límite',
+          tip: 'Cada 10 m² que evitas construir son unos 15.000 € menos de deuda hipotecaria.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'S1_METROS_EXTRA',
       label: 'Añadir 25 m² más a la casa',
@@ -108,6 +162,22 @@ export const REIGNS_SCENARIOS: GameCard[] = [
         warning: 'Construir metros de más es la solución perezosa tradicional que arruina los presupuestos.',
         advice: 'Un buen diseño arquitectónico crea estancias polivalentes de doble uso. La mejor casa no es la más grande, sino la que aprovecha cada centímetro.',
         quote: '«Los metros cuadrados que no construyes son los más baratos de calentar y pagar al banco».',
+        analogy: {
+          title: 'El camión de mudanzas vs el maletero bien organizado',
+          story: 'Para llevar una bolsa de deporte adicional no te compras un camión que consume 25 litros de gasoil cada 100 km. En tu hogar, añadir 25 m² de ladrillos genera 28.000 € de deuda directa y 30 años de pagar climatización por aire vacío. Una pared móvil acústica o una cama abatible integrada te da el mismo despacho gratis.',
+          lesson: 'El confort no se mide en metros cúbicos brutos, sino en la calidad de uso y luz de cada rincón.',
+          adaptableAdvice: 'Para tu caso: diseña un dormitorio que durante el horario laboral funcione como despacho con iluminación natural cenital y por la noche sea cuarto de descanso o invitados.',
+          cases: [
+            {
+              label: 'Caso de vivienda unifamiliar compacta',
+              tip: 'Aprovecha dobles alturas y luz cenital para dar sensación de amplitud sin engordar los metros construidos.'
+            },
+            {
+              label: 'Caso con visitas familiares ocasionales',
+              tip: 'Un sofá cama de calidad en un despacho bien aislado cuesta 1.500 €; una habitación extra vacía cuesta más de 25.000 €.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses adaptado la maqueta digital 3D:',
@@ -147,7 +217,26 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     character: CHARACTERS.builder,
     messageType: 'in_person',
     prompt: '«Tú no te compliques congelando planos. Los arquitectos hacen dibujitos muy monos en el ordenador, pero en la obra mando yo. Vamos levantando el ladrillo y sobre el terreno ya decidimos a ojo los tabiques y los enchufes».',
-    detailContext: 'Las decisiones sobre el papel o pantalla cuestan 0 €; mover un tabique con los tubos ya pasados cuesta miles.',
+    detailContext: 'Las decisiones sobre la maqueta digital en pantalla cuestan 0 €; mover un tabique con los tubos ya pasados cuesta miles.',
+    phaseAnalogy: {
+      title: 'Hacerte un traje a medida cosido a ciegas y rajándolo con tijeras para meter los bolsillos',
+      metaphor: 'Un sastre te cose una camisa puesta y luego viene otro ayudante con una cizalla a cortarte la manga porque se le olvidó poner el bolsillo interior.',
+      explanation: 'Eso son las "rozas" de la obra tradicional: albañiles haciendo paredes para que al día siguiente venga el fontanero a picarlas a martillazos para pasar cables. En la casa industrializada, cada orificio y conducto viene cortado por robot en fábrica con precisión milimétrica.',
+      cases: [
+        {
+          label: 'Si vas a poner cocina con isla o electrodomésticos especiales',
+          tip: 'Fija las tomas de agua y corriente en la maqueta 3D; cuando llegue la estructura encajará sin tener que taladrar suelos acabados.'
+        },
+        {
+          label: 'Si quieres evitar retrasos por lluvia o barro',
+          tip: 'La fabricación en seco en taller cerrado no depende de si llueve o hiela en la parcela.'
+        },
+        {
+          label: 'Si buscas acabados perfectos sin grietas',
+          tip: 'Los paneles de madera técnica no merman ni se agrietan como los enlucidos húmedos tradicionales.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'L2_SOBRE_LA_MARCHA',
       label: 'Decidir tabiques sobre la marcha',
@@ -162,6 +251,22 @@ export const REIGNS_SCENARIOS: GameCard[] = [
         warning: 'Picar tabiques recién hechos para pasar tubos es el pan de cada día en la obra artesanal.',
         advice: 'En la casa industrializada, cada paso de tubería y cable viene perforado de fábrica en la madera con precisión milimétrica. Cero polvo y cero martillazos.',
         quote: '«Una línea borrada en el ordenador cuesta un clic; una pared tirada a mazo en la obra cuesta tres semanas y mil disgustos».',
+        analogy: {
+          title: 'El sastre con tijeras vs el corte de precisión por láser',
+          story: 'Imagina que pagas por un traje caro y el sastre te lo cose directamente encima; cuando terminas, viene el botones con un cúter a romperte el forro para meter la cartera. Así de absurdo es levantar tabiques de ladrillo sobre la marcha para luego destrozarlos con una radial para pasar tubos de fontanería. En taller industrializado, la madera se corta con tolerancias de 1 milímetro con todas las canalizaciones listas.',
+          lesson: 'Resolver cada choque de tuberías en la pantalla ahorra semanas enteras de discusiones en el barro.',
+          adaptableAdvice: 'Para tu caso: exige ver el recorrido tridimensional de tuberías y ventilación antes de dar la orden de fabricación; no aceptes "lo vemos in situ".',
+          cases: [
+            {
+              label: 'Caso con suelo radiante o refrescante',
+              tip: 'Un tubo perforado por improvisar en obra tradicional exige levantar todo el recrecido; en madera técnica los pasos están sellados.'
+            },
+            {
+              label: 'Caso de distribución abierta salón-cocina',
+              tip: 'La extracción de humos y retorno de ventilación deben coordinarse previamente para que los conductos no queden a la vista.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses congelado la maqueta digital de precisión:',
@@ -201,6 +306,25 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     messageType: 'chat',
     prompt: '«Tengo mi presupuesto por mediciones: si el hierro o el cemento suben durante el año, lo vamos ajustando con "precios contradictorios". Es más justo para todos que firmar un precio cerrado fijo».',
     detailContext: 'El clásico truco del presupuesto con partidas abiertas: parece barato al inicio, pero no tiene techo de gasto ni penalización por retrasos.',
+    phaseAnalogy: {
+      title: 'Subirse a un taxi con taxímetro trucado vs contratar un trayecto con precio cerrado en la app',
+      metaphor: 'En un taxi antiguo el chófer puede dar rodeos, alegar que llueve o cobrarte un recargo por equipaje sin avisar; en la app sabes el céntimo exacto y la hora de llegada antes de subirte.',
+      explanation: 'Un presupuesto tradicional abierto es un cheque en blanco: si los materiales suben o el constructor calculó mal, te repercute "precios contradictorios" a mitad de obra sabiendo que ya no puedes marcharte. El contrato cerrado llave en mano fija el precio y los plazos ante notario.',
+      cases: [
+        {
+          label: 'Si dependes de la hipoteca del banco',
+          tip: 'Los bancos no amplían créditos por encarecimientos de obra. Un desvío de 30.000 € tendrás que pagarlo de tus ahorros o dejar la obra a medias.'
+        },
+        {
+          label: 'Si estás pagando alquiler mientras construyes',
+          tip: 'Cada mes de retraso de un constructor tradicional te cuesta la cuota de la hipoteca de carencia más tu alquiler actual.'
+        },
+        {
+          label: 'Si quieres dormir tranquilo por las noches',
+          tip: 'El contrato llave en mano de catálogo transfiere el riesgo del precio de los materiales a la empresa fabricante, no a ti.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'L3_OFERTA_BARATA',
       label: 'Presupuesto abierto por mediciones',
@@ -215,6 +339,22 @@ export const REIGNS_SCENARIOS: GameCard[] = [
         warning: 'Firmar un presupuesto con partidas abiertas es firmar un cheque en blanco al constructor.',
         advice: 'Exige siempre un contrato con precio cerrado notarial y llave en mano, donde el constructor asuma cualquier fluctuación del mercado de materiales.',
         quote: '«El "precio contradictorio" es el monstruo que se come los ahorros de toda la vida de los autopromotores».',
+        analogy: {
+          title: 'El taxímetro desbocado en noche de tormenta',
+          story: 'Te montas en un taxi para ir al aeropuerto y el conductor te dice: "No te preocupes por la tarifa, según haya atasco ya iremos viendo". A mitad de camino se mete por una carretera secundaria y el contador se dispara al triple. En la obra tradicional, el presupuesto abierto funciona igual: una vez que han vaciado la parcela y tienes zapatas puestas, estás atrapado y te suben el precio un 20% sabiendo que no puedes cambiar de constructor fácilmente.',
+          lesson: 'El precio debe ser cerrado y estar vinculado a fechas de entrega con penalizaciones por día de retraso.',
+          adaptableAdvice: 'Para tu caso: exige contrato de catálogo llave en mano con desglose transparente y precio sellado notarialmente.',
+          cases: [
+            {
+              label: 'Caso con hipoteca autopromotor',
+              tip: 'Presenta al tasador el contrato de precio cerrado; facilitará la tasación inicial al 100% sin reservas de riesgo.'
+            },
+            {
+              label: 'Caso con ahorros justos para muebles',
+              tip: 'Los sobrecostes imprevistos de la obra tradicional te obligarán a vivir meses sin muebles o recortar en climatización.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses elegido contrato cerrado de catálogo:',
@@ -254,6 +394,25 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     messageType: 'surprise',
     prompt: '«En el diseño del porche podemos integrar un alero o pérgola con cálculo solar: tapará el sol abrasador en agosto pero dejará entrar los rayos cálidos en pleno enero. ¿Lo dejamos incluido?»',
     detailContext: 'Una decisión de física del edificio: confort natural gratuito frente a depender del aire acondicionado de por vida.',
+    phaseAnalogy: {
+      title: 'Llevar una gorra con visera bajo el sol de mediodía vs ir sin nada y comprar bolsas de hielo para la frente',
+      metaphor: 'Una visera bloquea el sol vertical de verano sin taparte la vista. En invierno, cuando el sol va bajo, entra por debajo y te calienta la cara.',
+      explanation: 'El alero bioclimático utiliza la inclinación del sol: en julio está a 70° de altura (la sombra cubre el cristal y la casa se mantiene fresca sin gastar electricidad), pero en enero está a 25° (el sol entra hasta el fondo del salón y te calienta gratis). Quitarlo para ahorrar hoy significa pagar 40 € más al mes en luz para siempre.',
+      cases: [
+        {
+          label: 'Si tu parcela está en zona centro o sur calurosa',
+          tip: 'La protección solar exterior es la diferencia entre un hogar a 22°C o un horno insoportable en las olas de calor.'
+        },
+        {
+          label: 'Si tienes grandes ventanales al sur u oeste',
+          tip: 'Una cortina interior no para el calor: cuando el rayo toca el cristal, el calor ya está dentro. El freno debe estar por fuera.'
+        },
+        {
+          label: 'Si buscas la factura eléctrica más baja posible',
+          tip: 'El cálculo solar pasivo sustituye horas y horas de compresor de aire acondicionado.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'S2_QUITAR_PERGOLA',
       label: 'Prescindir del alero solar',
@@ -268,6 +427,22 @@ export const REIGNS_SCENARIOS: GameCard[] = [
         warning: 'Quitar la protección solar pasiva para ahorrar hoy traslada el coste a la factura de la luz para siempre.',
         advice: 'Un alero bien dimensionado utiliza la geometría del cielo: el sol está alto en verano (lo frena) y bajo en invierno (lo deja pasar para calentar gratis la casa).',
         quote: '«La mejor energía es la sombra natural que no gasta ni un vatio».',
+        analogy: {
+          title: 'La visera de la gorra vs el abanico eléctrico continuo',
+          story: 'Caminar a 40°C sin gorra te obliga a echarte agua continuamente en la cara para no marearte. El alero arquitectónico es la visera de tu casa: no consume pilas ni se estropea. En agosto el sol cae a plomo y el alero proyecta una sombra refrescante en tus ventanas. En diciembre, cuando el sol va raso, sus rayos entran por debajo del alero e iluminan y calientan el suelo de madera gratis.',
+          lesson: 'El calor que no entra en verano no tienes que gastar dinero en sacarlo con máquinas de aire.',
+          adaptableAdvice: 'Para tu caso: calcula la profundidad del alero según tu latitud geográfica; te garantizará sombra completa de junio a septiembre.',
+          cases: [
+            {
+              label: 'Caso de ventanas orientadas al oeste',
+              tip: 'El sol de poniente de verano entra muy bajo; complementa el alero con lamas verticales o vegetación de hoja caduca.'
+            },
+            {
+              label: 'Caso en clima de montaña',
+              tip: 'Un voladizo optimizado permite maximizar la ganancia térmica solar durante el 70% del año que hace frío.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses incluido la protección solar calculada:',
@@ -308,6 +483,25 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     messageType: 'in_person',
     prompt: '«¿Cintas caras de sellado hermético y la maquinita esa del ventilador en la puerta? ¡Menuda tontería de modernos! Las casas de toda la vida tienen que respirar por las rendijas o te asfixias. Yo os pongo unas ventanas baratas que me saca un amigo con un bote de espuma rápida y arreando».',
     detailContext: 'El 60% del calor de una casa tradicional se escapa por las holguras entre la ventana y la pared, provocando moho negro y corrientes frías.',
+    phaseAnalogy: {
+      title: 'Llevar un abrigo de plumas de alta montaña con cremallera estanca vs un jersey de punto con agujeros por donde entra el viento',
+      metaphor: 'Si sales a una nevada con un jersey de lana gordo pero lleno de agujeros, el viento helado te atraviesa y te congelas aunque el jersey sea caro.',
+      explanation: 'Decir que "la casa tiene que respirar por las rendijas" es una justificación para tapar ventanas mal instaladas con espuma cutre. Tu casa debe ser hermética como un anorak de montaña para no perder calor ni tener corrientes en los pies, y debe "respirar" mediante su propio pulmón (ventilación mecánica controlada que purifica y renueva el aire sin enfriar).',
+      cases: [
+        {
+          label: 'Si sufres de alergias o ruidos exteriores',
+          tip: 'La hermeticidad con filtros de aire elimina el 95% del polen, el hollín de los coches y el ruido de la calle.'
+        },
+        {
+          label: 'Si quieres evitar condensaciones y moho negro',
+          tip: 'El moho aparece donde hay puentes térmicos y corrientes frías; el sellado hermético mantiene las esquinas a temperatura homogénea.'
+        },
+        {
+          label: 'Si quieres facturas de calefacción mínimas',
+          tip: 'El calor no se escapa por las rendijas y la casa retiene la temperatura durante horas sin consumir energía.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'L4_ESPUMA_RAPIDA',
       label: 'Aceptar la espuma barata del amigo',
@@ -322,6 +516,22 @@ export const REIGNS_SCENARIOS: GameCard[] = [
         warning: 'El mito de que "la casa tiene que respirar por las rendijas" es una excusa para tapar chapuzas de aislamiento.',
         advice: 'Una casa eficiente debe ser hermética como un abrigo de calidad. El aire fresco debe entrar filtrado y controlado por la ventilación inteligente, no colándose por agujeros helados.',
         quote: '«Una ventana cara instalada con un chorro de espuma corriente funciona exactamente igual que una ventana abierta dos dedos».',
+        analogy: {
+          title: 'El anorak técnico vs el jersey calado en una ventisca',
+          story: 'Imagina ponerte un anorak de alta montaña de 500 € pero dejarte la cremallera del pecho abierta de par en par: te congelarás exactamente igual que si fueras en camiseta. En una vivienda, gastarse miles de euros en ventanas de aluminio y rellenar el hueco de la pared con espuma de bote sin cintas elásticas estancas es dejar esa cremallera abierta. El aire helado se cuela, enfría el muro y crea manchas negras de moho tóxico.',
+          lesson: 'La hermeticidad no asfixia: la casa ventila continuamente por su sistema mecánico con recuperador de calor.',
+          adaptableAdvice: 'Para tu caso: exige la prueba del ventilador en la puerta (test de inflado) antes de colocar los remates para asegurar que el sellado es estanco.',
+          cases: [
+            {
+              label: 'Caso con niños pequeños o asmáticos',
+              tip: 'El aire filtrado continuo evita crisis de asma y bronquitis al renovar el CO2 sin abrir ventanas en invierno.'
+            },
+            {
+              label: 'Caso en clima muy húmedo o costero',
+              tip: 'La ausencia de corrientes frías en ventanas previene el deterioro de maderas interiores y pinturas.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses exigido el sellado hermético certificado:',
@@ -361,6 +571,25 @@ export const REIGNS_SCENARIOS: GameCard[] = [
     messageType: 'in_person',
     prompt: '«Fírmame el acta de fin de obra y te doy las llaves ya mismo, que tengo que llevar los peones a otra parcela mañana. Los cuatro remates que quedan sueltos y la máquina de aire ya vendrá un chaval la semana que viene a mirártelo, te doy mi palabra».',
     detailContext: 'El momento más emocionante del proyecto, pero donde se cierran las garantías legales del contrato.',
+    phaseAnalogy: {
+      title: 'Sacar un coche nuevo del concesionario sin encender el motor ni comprobar los frenos porque tienes prisa por conducirlo',
+      metaphor: 'Si sacas el coche a ciegas y en la primera curva no frena o echa humo, el vendedor te dirá que pidas cita para dentro de un mes. Pierdes toda la fuerza.',
+      explanation: 'Cuando firmas el fin de obra sin reservas, el banco le entrega al constructor el último 10% de tu dinero que tenía retenido como garantía. Una vez cobrado, sus incentivos para volver a arreglar los fallos caen a cero. La comprobación técnica oficial garantiza que te entreguen una casa terminada y garantizada ante notario.',
+      cases: [
+        {
+          label: 'Si quieres evitar llamadas eternas sin respuesta',
+          tip: 'No firmes el acta hasta que cada enchufe, grifo y máquina de ventilación esté probado y funcionando en silencio.'
+        },
+        {
+          label: 'Si quieres conservar el valor de reventa de la casa',
+          tip: 'El libro digital del edificio con los certificados energéticos oficiales y esquemas de instalaciones es tu mayor garantía patrimonial.'
+        },
+        {
+          label: 'Si quieres que el constructor cumpla los remates',
+          tip: 'La retención del último pago del 5% o 10% es la única herramienta que garantiza que terminen hasta el último detalle.'
+        }
+      ]
+    },
     leftChoice: {
       id: 'L5_ENTRAR_YA',
       label: 'Firmar ya por las prisas de entrar',
@@ -375,6 +604,22 @@ export const REIGNS_SCENARIOS: GameCard[] = [
         warning: 'Firmar el fin de obra sin repasar la lista de comprobaciones te deja legalmente indefenso.',
         advice: 'No entregues el último pago sin el acta de pruebas técnicas: comprobación de caudal del pulmón de aire, certificado de inflado hermético y entrega del libro de la casa con garantías selladas.',
         quote: '«La emoción de la mudanza no debe nublar la firma del documento más importante de tu inversión».',
+        analogy: {
+          title: 'El concesionario de coches y el motor que vibra',
+          story: 'Vas a recoger tu coche nuevo de paquete, te dan las llaves en mano y el vendedor te dice: "Fírmame aquí que te lo llevas perfecto; si la marcha atrás rasca o el freno vibra, la semana que viene se pasa un mecánico". Si firmas y sales a la calle, el seguro y el concesionario se desentienden. En tu casa, firmar el fin de obra libera la última certificación bancaria: una vez que Manolo cobra, sus teléfonos dejan de dar tono y los remates tendrás que pagarlos tú.',
+          lesson: 'La retención del último pago hasta la comprobación final es tu derecho legal y tu único escudo.',
+          adaptableAdvice: 'Para tu caso: organiza una visita de 3 horas con tu arquitecto técnico para probar cada instalación antes de firmar la entrega.',
+          cases: [
+            {
+              label: 'Caso con sistema de ventilación inteligente',
+              tip: 'Mide que el caudal de impulsión en dormitorios sea exactamente el proyectado y que los filtros estén nuevos.'
+            },
+            {
+              label: 'Caso con certificación Passivhaus',
+              tip: 'Exige el certificado emitido por el instituto oficial antes de liquidar los honorarios técnicos finales.'
+            }
+          ]
+        }
       },
       parallelOutcome: {
         title: 'Si hubieses exigido el protocolo de comprobaciones:',

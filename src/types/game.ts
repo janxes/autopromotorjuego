@@ -21,6 +21,31 @@ export interface GameIndicators {
   n50BlowerDoor: number; // Initially 0.45
 }
 
+export interface PhaseAnalogyCase {
+  label: string;
+  tip: string;
+}
+
+export interface PhaseAnalogy {
+  title: string;
+  metaphor: string;
+  explanation: string;
+  cases: PhaseAnalogyCase[];
+}
+
+export interface TechnicalTip {
+  warning: string;
+  advice: string;
+  quote: string;
+  analogy?: {
+    title: string;
+    story: string;
+    lesson: string;
+    adaptableAdvice: string;
+    cases?: PhaseAnalogyCase[];
+  };
+}
+
 export interface CardChoice {
   id: string;
   label: string; // Brief label on button (e.g. "Revisar condiciones primero")
@@ -31,11 +56,7 @@ export interface CardChoice {
   deltaFactura: number;
   consequenceText: string;
   partnerReaction?: string;
-  technicalTip?: {
-    warning: string;
-    advice: string;
-    quote: string;
-  };
+  technicalTip?: TechnicalTip;
   parallelOutcome: {
     title: string;
     budgetResult: string;
@@ -57,6 +78,7 @@ export interface GameCard {
   rightChoice: CardChoice;
   houseStageAfter: HouseStage;
   isSurpriseCard?: boolean;
+  phaseAnalogy?: PhaseAnalogy;
 }
 
 export interface PlayerProfile {
@@ -85,6 +107,8 @@ export interface AlertaAutopromotor {
   penalizacionPresupuesto: number;
   penalizacionSemanas: number;
   penalizacionEstres: number;
+  analogia?: string;
+  adaptableACadaCaso?: string;
 }
 
 export interface ChoiceOption {

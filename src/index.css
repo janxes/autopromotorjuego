@@ -44,3 +44,107 @@ body.high-contrast .border-slate-300 {
 body.high-contrast button {
   border-width: 2px !important;
 }
+
+/* Consequence Feedback Animations (Sort the Court! inspired) */
+@keyframes halo-teal {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7), 0 4px 12px rgba(13, 148, 136, 0.2);
+    transform: scale(1);
+  }
+  40% {
+    box-shadow: 0 0 0 6px rgba(13, 148, 136, 0.25), 0 8px 18px rgba(13, 148, 136, 0.35);
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15), 0 4px 12px rgba(13, 148, 136, 0.15);
+    transform: scale(1.01);
+  }
+}
+
+@keyframes halo-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7), 0 4px 12px rgba(239, 68, 68, 0.2);
+    transform: scale(1);
+  }
+  40% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.25), 0 8px 18px rgba(239, 68, 68, 0.35);
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15), 0 4px 12px rgba(239, 68, 68, 0.15);
+    transform: scale(1.01);
+  }
+}
+
+@keyframes halo-amber {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7), 0 4px 12px rgba(245, 158, 11, 0.2);
+    transform: scale(1);
+  }
+  40% {
+    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.25), 0 8px 18px rgba(245, 158, 11, 0.35);
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15), 0 4px 12px rgba(245, 158, 11, 0.15);
+    transform: scale(1.01);
+  }
+}
+
+@keyframes item-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes card-overlay-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-halo-teal {
+  animation: halo-teal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-halo-red {
+  animation: halo-red 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-halo-amber {
+  animation: halo-amber 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-item-pop {
+  animation: item-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-card-overlay-in {
+  animation: card-overlay-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-halo-teal,
+  .animate-halo-red,
+  .animate-halo-amber,
+  .animate-item-pop,
+  .animate-card-overlay-in {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
