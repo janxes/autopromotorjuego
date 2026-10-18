@@ -5,9 +5,12 @@ import {
   CardChoice,
   GameHistoryEntry,
   PlayerProfile,
+  GameMode,
 } from './types/game';
 import {
   REIGNS_SCENARIOS,
+  REIGNS_SCENARIOS_FULL,
+  REIGNS_SCENARIOS_QUICK,
   calculatePlayerProfile,
 } from './utils/reignsScenarioData';
 import { HUDHeader } from './components/HUDHeader';
@@ -60,6 +63,7 @@ export default function App() {
   const [showWelcome, setShowWelcome] = useState<boolean>(true);
 
   // Game Engine State
+  const [gameMode, setGameMode] = useState<GameMode>('full');
   const [cardIndex, setCardIndex] = useState<number>(0);
   const [houseStage, setHouseStage] = useState<HouseStage>(1);
   const [indicators, setIndicators] = useState<GameIndicators>(INITIAL_INDICATORS);
@@ -114,6 +118,7 @@ export default function App() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.indicators && typeof parsed.cardIndex === 'number') {
+          if (parsed.gameMode) setGameMode(parsed.gameMode);
           setIndicators(parsed.indicators);
           setCardIndex(parsed.cardIndex);
           setHouseStage(parsed.houseStage || 1);
@@ -133,6 +138,7 @@ export default function App() {
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
+          gameMode,
           indicators,
           cardIndex,
           houseStage,
@@ -144,9 +150,10 @@ export default function App() {
     } catch (e) {
       // ignore
     }
-  }, [indicators, cardIndex, houseStage, history, isGameOver, playerProfile]);
+  }, [gameMode, indicators, cardIndex, houseStage, history, isGameOver, playerProfile]);
 
-  const currentCard = REIGNS_SCENARIOS[cardIndex] || REIGNS_SCENARIOS[0];
+  const activeScenarios = gameMode === 'quick' ? REIGNS_SCENARIOS_QUICK : REIGNS_SCENARIOS_FULL;
+  const currentCard = activeScenarios[cardIndex] || activeScenarios[0];
 
   // Speech synthesis
   const handleToggleSpeech = () => {
@@ -269,9 +276,9 @@ export default function App() {
       nextIndicators,
       onComplete: () => {
         const nextIndex = cardIndex + 1;
-        if (nextIndex >= REIGNS_SCENARIOS.length) {
+        if (nextIndex >= activeScenarios.length) {
           setIsGameOver(true);
-          const profile = calculatePlayerProfile(nextHistory);
+          const profile = calculatePlayerProfile(nextHistory, activeScenarios.length);
           setPlayerProfile(profile);
           confetti({
             particleCount: 100,
@@ -335,6 +342,7 @@ export default function App() {
             }}
             hasSavedProgress={history.length > 0}
             savedTurn={cardIndex + 1}
+            totalTurns={REIGNS_SCENARIOS.length}
             onResume={() => setShowWelcome(false)}
           />
         ) : (

@@ -9,6 +9,7 @@ export interface Character {
 }
 
 export type HouseStage = 1 | 2 | 3 | 4 | 5;
+export type GameMode = 'full' | 'quick';
 
 export interface GameIndicators {
   presupuestoRestante: number; // Initially 250000

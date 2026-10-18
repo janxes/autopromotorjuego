@@ -71,18 +71,288 @@ export const ConsequenceFeedbackCard: React.FC<ConsequenceFeedbackCardProps> = (
 
       {/* Animated Visual Cue corresponding to Phase Consequence */}
       {feedback.animation && (
-        <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/90 flex items-start gap-2.5 text-left animate-in fade-in duration-200 w-full shadow-2xs">
-          <div className="text-2xl p-1.5 rounded-lg bg-white border border-amber-200 shadow-2xs shrink-0">
-            {feedback.animation.icon}
+        <div className="space-y-2 w-full animate-in fade-in duration-200">
+          <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/90 flex items-start gap-2.5 text-left w-full shadow-2xs">
+            <div className="text-2xl p-1.5 rounded-lg bg-white border border-amber-200 shadow-2xs shrink-0">
+              {feedback.animation.icon}
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-900 block">
+                Así reacciona tu proyecto:
+              </span>
+              <p className="text-xs sm:text-sm text-amber-950 font-medium leading-snug">
+                {feedback.animation.description}
+              </p>
+            </div>
           </div>
-          <div className="space-y-0.5">
-            <span className="text-xs font-black uppercase tracking-wider text-amber-900 block">
-              Animación de consecuencias en obra:
-            </span>
-            <p className="text-xs sm:text-sm text-amber-950 font-medium leading-snug">
-              {feedback.animation.description}
-            </p>
-          </div>
+
+          {/* Interactive 5 Principles Visualization for Passivhaus no es menú a la carta */}
+          {feedback.animation.visualType === 'five_principles' && (
+            <div className="p-3.5 rounded-2xl bg-slate-900 text-white space-y-3 shadow-sm border border-slate-800">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                  Los 5 Principios Passivhaus
+                </span>
+                <span
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    feedback.isPassivhausWay
+                      ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
+                      : 'bg-amber-950 text-amber-300 border border-amber-700'
+                  }`}
+                >
+                  {feedback.isPassivhausWay
+                    ? '🎯 Objetivo de certificación previsto'
+                    : '⚠️ Escenario: Sin verificar'}
+                </span>
+              </div>
+
+              {/* The 5 Pieces Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-1.5 text-center text-xs">
+                {/* 1. Aislamiento */}
+                <div
+                  className={`p-2 rounded-xl border flex sm:flex-col items-center justify-between sm:justify-center gap-1 ${
+                    feedback.isPassivhausWay
+                      ? 'bg-emerald-950/60 border-emerald-500 text-emerald-100'
+                      : 'bg-emerald-950/40 border-emerald-600 text-emerald-200'
+                  }`}
+                >
+                  <span className="text-base">🧱</span>
+                  <span className="text-[11px] font-bold">1. Aislamiento</span>
+                  <span className="text-[9px] text-emerald-400">✓ Envolvente</span>
+                </div>
+
+                {/* 2. Ventanas */}
+                <div
+                  className={`p-2 rounded-xl border flex sm:flex-col items-center justify-between sm:justify-center gap-1 ${
+                    feedback.isPassivhausWay
+                      ? 'bg-emerald-950/60 border-emerald-500 text-emerald-100'
+                      : 'bg-emerald-950/40 border-emerald-600 text-emerald-200'
+                  }`}
+                >
+                  <span className="text-base">🪟</span>
+                  <span className="text-[11px] font-bold">2. Ventanas</span>
+                  <span className="text-[9px] text-emerald-400">✓ Triple vidrio</span>
+                </div>
+
+                {/* 3. Puentes térmicos */}
+                <div
+                  className={`p-2 rounded-xl border flex sm:flex-col items-center justify-between sm:justify-center gap-1 ${
+                    feedback.isPassivhausWay
+                      ? 'bg-emerald-950/60 border-emerald-500 text-emerald-100'
+                      : 'bg-slate-800/80 border-dashed border-amber-500 text-amber-200'
+                  }`}
+                >
+                  <span className="text-base">{feedback.isPassivhausWay ? '📐' : '❓'}</span>
+                  <span className="text-[11px] font-bold">3. P. Térmicos</span>
+                  <span
+                    className={`text-[9px] font-semibold ${
+                      feedback.isPassivhausWay ? 'text-emerald-400' : 'text-amber-400'
+                    }`}
+                  >
+                    {feedback.isPassivhausWay ? '✓ Sin puentes' : '¿Aislado?'}
+                  </span>
+                </div>
+
+                {/* 4. Hermeticidad */}
+                <div
+                  className={`p-2 rounded-xl border flex sm:flex-col items-center justify-between sm:justify-center gap-1 ${
+                    feedback.isPassivhausWay
+                      ? 'bg-emerald-950/60 border-emerald-500 text-emerald-100'
+                      : 'bg-slate-800/80 border-dashed border-amber-500 text-amber-200'
+                  }`}
+                >
+                  <span className="text-base">{feedback.isPassivhausWay ? '🛡️' : '❓'}</span>
+                  <span className="text-[11px] font-bold">4. Hermetismo</span>
+                  <span
+                    className={`text-[9px] font-semibold ${
+                      feedback.isPassivhausWay ? 'text-emerald-400' : 'text-amber-400'
+                    }`}
+                  >
+                    {feedback.isPassivhausWay ? '✓ Blower Door' : '¿Fugas?'}
+                  </span>
+                </div>
+
+                {/* 5. Ventilación VMC */}
+                <div
+                  className={`p-2 rounded-xl border flex sm:flex-col items-center justify-between sm:justify-center gap-1 ${
+                    feedback.isPassivhausWay
+                      ? 'bg-emerald-950/60 border-emerald-500 text-emerald-100'
+                      : 'bg-slate-800/80 border-dashed border-amber-500 text-amber-200'
+                  }`}
+                >
+                  <span className="text-base">{feedback.isPassivhausWay ? '💨' : '❓'}</span>
+                  <span className="text-[11px] font-bold">5. VMC Filtros</span>
+                  <span
+                    className={`text-[9px] font-semibold ${
+                      feedback.isPassivhausWay ? 'text-emerald-400' : 'text-amber-400'
+                    }`}
+                  >
+                    {feedback.isPassivhausWay ? '✓ 92% recupera' : '¿Natural?'}
+                  </span>
+                </div>
+              </div>
+
+              {/* The Verification Route */}
+              {feedback.isPassivhausWay ? (
+                <div className="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-left space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 block">
+                    Ruta de verificación rigurosa:
+                  </span>
+                  <div className="text-[11px] sm:text-xs text-slate-200 font-mono flex flex-wrap items-center gap-1">
+                    <span className="text-emerald-300 font-bold">Proyectar</span>
+                    <span>→</span>
+                    <span className="text-emerald-300 font-bold">Calcular (PHPP)</span>
+                    <span>→</span>
+                    <span className="text-emerald-300 font-bold">Ejecutar y comprobar</span>
+                    <span>→</span>
+                    <span className="text-slate-400 italic">Certificar, si se solicita</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 pt-1 leading-snug">
+                    * La certificación oficial la expide un certificador autorizado tras auditar la obra y el test Blower Door; el cálculo PHPP aporta la base matemática previa.
+                  </p>
+                </div>
+              ) : (
+                <div className="p-2.5 rounded-xl bg-amber-950/40 border border-amber-800/80 text-left space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 block">
+                    Incertidumbre energética del conjunto:
+                  </span>
+                  <p className="text-[11px] text-amber-200/90 leading-snug">
+                    Elementos añadidos por separado sin balance PHPP. Si más adelante decides certificar la casa, se requerirá una revisión de proyecto con posibles sobrecostes y semanas de ajuste.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Postal de la parcela que se gira y revela ficha técnica */}
+          {feedback.animation.visualType === 'parcel_postcard' && (
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-300 space-y-2.5 shadow-sm text-left">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1">
+                  <span>🌄</span> Postal de la Parcela & Ficha de Viabilidad
+                </span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${feedback.isPassivhausWay ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`}>
+                  {feedback.isPassivhausWay ? '✓ Viabilidad contrastada' : '⚠️ Reserva a ciegas'}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
+                  <span className="font-bold block text-[11px]">¿Cabe el modelo?</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? '✓ Huella y cotas comprobadas' : '❓ Pendiente de verificar'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
+                  <span className="font-bold block text-[11px]">¿Accesos grúa/camión?</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? '✓ Radio de giro validado' : '❓ Calles estrechas'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
+                  <span className="font-bold block text-[11px]">¿Pendiente y terreno?</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? '✓ Topografía y cota de roca' : '❓ Desnivel no medido'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
+                  <span className="font-bold block text-[11px]">¿Urbanística y lindes?</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? '✓ Ficha municipal limpia' : '❓ Posibles servidumbres'}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* El precio de la casa no es toda la cuenta (Cajas desglosadas) */}
+          {feedback.animation.visualType === 'budget_breakdown' && (
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-300 space-y-2.5 shadow-sm text-left">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                  Desglose de la Cuenta Completa
+                </span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${feedback.isPassivhausWay ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}`}>
+                  {feedback.isPassivhausWay ? '✓ Presupuesto Global' : '⚠️ Solo Precio Portada'}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950">
+                  <span className="font-bold block text-[11px]">🏡 Vivienda en Taller</span>
+                  <span className="text-[10px]">Estructura, envolvente y montaje</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-sky-50 border-sky-200 text-sky-950' : 'bg-slate-100 border-dashed border-slate-300 text-slate-600'}`}>
+                  <span className="font-bold block text-[11px]">📍 Parcela e ITP</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'Partida acotada y reservada' : 'No contemplada en oferta'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-sky-50 border-sky-200 text-sky-950' : 'bg-slate-100 border-dashed border-slate-300 text-slate-600'}`}>
+                  <span className="font-bold block text-[11px]">📋 Licencia e ICIO</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'Tasas y proyectos visados' : 'Gastos municipales aparte'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-sky-50 border-sky-200 text-sky-950' : 'bg-slate-100 border-dashed border-slate-300 text-slate-600'}`}>
+                  <span className="font-bold block text-[11px]">🚜 Obra exterior y acometidas</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'Zanjas, luz, agua y vallado' : 'Sorpresa de última hora'}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Desplazar pared: Elementos afectados y tarjeta de impacto */}
+          {feedback.animation.visualType === 'wall_impact' && (
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-300 space-y-2.5 shadow-sm text-left">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                  Ficha de Impacto del Cambio
+                </span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${feedback.isPassivhausWay ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`}>
+                  {feedback.isPassivhausWay ? '✓ Valoración informada' : '⚠️ Cambio sobre la marcha'}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
+                  <span className="text-[10px] text-slate-500 font-bold block">Coste</span>
+                  <span className={`font-black text-xs ${feedback.isPassivhausWay ? 'text-emerald-700' : 'text-rose-700'}`}>
+                    {feedback.isPassivhausWay ? 'Acotado en plano' : '+5.500 € rozas'}
+                  </span>
+                </div>
+                <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
+                  <span className="text-[10px] text-slate-500 font-bold block">Plazo</span>
+                  <span className={`font-black text-xs ${feedback.isPassivhausWay ? 'text-slate-800' : 'text-rose-700'}`}>
+                    {feedback.isPassivhausWay ? 'Sin parón' : '+3 semanas'}
+                  </span>
+                </div>
+                <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
+                  <span className="text-[10px] text-slate-500 font-bold block">Afectados</span>
+                  <span className="font-bold text-[11px] text-slate-800">
+                    Tubos, VMC y forjado
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Carpeta y Llavero de Entrega de Llaves */}
+          {feedback.animation.visualType === 'keys_handover_folder' && (
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-300 space-y-2.5 shadow-sm text-left">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                  <span className="text-base">🔑</span> Carpeta de Entrega y Puesta en Marcha
+                </span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${feedback.isPassivhausWay ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}`}>
+                  {feedback.isPassivhausWay ? '✓ Entrega ordenada y sellada' : '⚠️ Flecos por WhatsApp'}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                  <span className="font-bold block text-[11px]">📋 Revisión y Acta</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'Protocolo oficial firmado' : 'Revisar viviendo dentro'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                  <span className="font-bold block text-[11px]">📁 Documentación</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'Libro digital del edificio' : 'Planos pendientes de envío'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                  <span className="font-bold block text-[11px]">✍️ Pendientes por escrito</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'Garantía con retención' : 'Promesas de palabra'}</span>
+                </div>
+                <div className={`p-2 rounded-xl border ${feedback.isPassivhausWay ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-700'}`}>
+                  <span className="font-bold block text-[11px]">⚙️ Uso de instalaciones</span>
+                  <span className="text-[10px]">{feedback.isPassivhausWay ? 'VMC calibrada y filtros' : 'Averías y ruidos no probados'}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

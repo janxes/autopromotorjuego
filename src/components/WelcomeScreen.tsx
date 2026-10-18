@@ -1,10 +1,13 @@
-import React from 'react';
-import { ArrowRight, RotateCcw } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, RotateCcw, Check, Zap, Map } from 'lucide-react';
+import { GameMode } from '../types/game';
 
 interface WelcomeScreenProps {
-  onStart: () => void;
+  onStart: (mode: GameMode) => void;
   hasSavedProgress?: boolean;
   savedTurn?: number;
+  totalTurns?: number;
+  currentMode?: GameMode;
   onResume?: () => void;
 }
 
@@ -12,8 +15,12 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onStart,
   hasSavedProgress = false,
   savedTurn = 1,
+  totalTurns = 10,
+  currentMode = 'full',
   onResume,
 }) => {
+  const [selectedMode, setSelectedMode] = useState<GameMode>(currentMode);
+
   return (
     <div className="w-full max-w-xl mx-auto my-3 sm:my-6 bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 space-y-6 sm:space-y-8 animate-in fade-in zoom-in-95 duration-300">
       {/* Top Brand Logo */}
@@ -36,17 +43,23 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           Tu casa empieza antes del primer ladrillo.
         </h1>
         <p className="text-base sm:text-lg font-bold text-emerald-900 leading-snug">
-          No necesitas saber de construcción. Solo decidir.
+          Construir no es apilar materiales. Es tomar diez decisiones estratégicas en el orden correcto.
         </p>
       </div>
 
-      {/* Seth Godin Narrative Flow: Short, Punchy, Meaningful */}
-      <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
-        <p className="text-base sm:text-lg font-black text-slate-950 tracking-tight leading-snug">
-          Construye tu casa en cinco decisiones.
+      {/* Main Copy (Short, Punchy, Seth Godin Manifesto) */}
+      <div className="space-y-4 text-xs sm:text-sm text-slate-800 font-normal leading-relaxed">
+        <p>
+          La mayoría de la gente cree que el mayor riesgo de una obra es el hormigón o la lluvia.
+          <strong> No lo es.</strong>
         </p>
 
-        {/* Las dos voces en contraste */}
+        <p>
+          El verdadero riesgo son las decisiones que tomas antes de que entre la excavadora:
+          firmar folios abiertos, no contrastar la viabilidad de la parcela, añadir soluciones Passivhaus como un menú a la carta o dejar la coordinación en un grupo de WhatsApp.
+        </p>
+
+        {/* Seth Godin Visual Duality: Two Perspectives */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-2">
           <div className="p-3.5 rounded-2xl bg-rose-50/80 border border-rose-200/90 text-rose-950 space-y-1">
             <span className="text-xs font-black uppercase tracking-wider text-rose-900 block">
@@ -90,6 +103,73 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           </div>
         </div>
 
+        {/* MODE SELECTOR: Full (10 phases) vs Quick (5 phases) */}
+        <div className="pt-2 space-y-2">
+          <span className="text-xs font-black uppercase tracking-wider text-slate-900 block">
+            Elige tu modo de simulación:
+          </span>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            {/* Mode 1: Full Journey */}
+            <button
+              type="button"
+              onClick={() => setSelectedMode('full')}
+              className={`p-3.5 rounded-2xl border text-left transition relative cursor-pointer ${
+                selectedMode === 'full'
+                  ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-500/30'
+                  : 'bg-white border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Map className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span className="text-xs sm:text-sm font-black text-slate-900">
+                    «De la parcela a las llaves»
+                  </span>
+                </div>
+                {selectedMode === 'full' && (
+                  <Check className="w-4 h-4 text-emerald-700 shrink-0" />
+                )}
+              </div>
+              <p className="text-[11px] text-slate-600 mt-1 font-medium leading-snug">
+                El recorrido completo en <strong>10 fases</strong> estratégicas (~5–8 min).
+              </p>
+              <span className="inline-block mt-2 text-[10px] font-bold text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md">
+                Recomendado
+              </span>
+            </button>
+
+            {/* Mode 2: Quick Play */}
+            <button
+              type="button"
+              onClick={() => setSelectedMode('quick')}
+              className={`p-3.5 rounded-2xl border text-left transition relative cursor-pointer ${
+                selectedMode === 'quick'
+                  ? 'bg-sky-50/90 border-sky-600 ring-2 ring-sky-500/30'
+                  : 'bg-white border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-sky-700 shrink-0" />
+                  <span className="text-xs sm:text-sm font-black text-slate-900">
+                    «Partida rápida»
+                  </span>
+                </div>
+                {selectedMode === 'quick' && (
+                  <Check className="w-4 h-4 text-sky-700 shrink-0" />
+                )}
+              </div>
+              <p className="text-[11px] text-slate-600 mt-1 font-medium leading-snug">
+                <strong>5 decisiones clave</strong> express seleccionadas (~3–4 min).
+              </p>
+              <span className="inline-block mt-2 text-[10px] font-bold text-sky-800 bg-sky-100/70 px-2 py-0.5 rounded-md">
+                Express
+              </span>
+            </button>
+          </div>
+        </div>
+
         {/* Seth Godin Highlight Callout: Freedom to experiment */}
         <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/85 border-l-4 border-amber-500 text-amber-950 space-y-1.5 shadow-2xs">
           <p className="text-base sm:text-lg font-black text-amber-950 leading-snug">
@@ -101,7 +181,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         </div>
 
         <p>
-          En <strong>tres minutos</strong> descubrirás qué preguntar antes de construir, qué dejar cerrado en contrato y qué no confiar jamás a la improvisación.
+          En {selectedMode === 'full' ? 'unos 5–8 minutos' : 'tres minutos'} descubrirás qué preguntar antes de construir, qué dejar cerrado en contrato y qué no confiar jamás a la improvisación.
         </p>
 
         <p className="font-bold text-slate-950">
@@ -112,10 +192,14 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       {/* Main Call to Action Buttons */}
       <div className="space-y-2.5 pt-2 border-t border-slate-100">
         <button
-          onClick={onStart}
+          onClick={() => onStart(selectedMode)}
           className="w-full py-4 px-6 rounded-2xl bg-slate-950 hover:bg-black text-white font-black text-base shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 flex items-center justify-center gap-2.5 transition active:scale-[0.99] cursor-pointer"
         >
-          <span>Empezar mi proyecto</span>
+          <span>
+            {selectedMode === 'full'
+              ? 'Empezar el recorrido completo (10 fases)'
+              : 'Empezar partida rápida (5 fases)'}
+          </span>
           <ArrowRight className="w-5 h-5 text-emerald-400" />
         </button>
 
@@ -125,7 +209,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             className="w-full py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
-            <span>Continuar donde lo dejé (Hito {savedTurn} de 5)</span>
+            <span>Continuar donde lo dejé (Hito {savedTurn} de {totalTurns})</span>
           </button>
         )}
       </div>
