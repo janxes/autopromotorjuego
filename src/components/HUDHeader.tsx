@@ -634,7 +634,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
                 <span>💰</span>
                 <span>Presupuesto</span>
               </span>
@@ -642,7 +642,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'budget' && activeDelta?.presupuesto !== undefined ? (
                 <span
-                  className={`text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
                     activeDelta.presupuesto < 0
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
@@ -654,7 +654,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-[9px] font-extrabold px-1 py-0.2 rounded-full ${
+                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
                     previewChoice.deltaPresupuesto < 0
                       ? 'bg-rose-100 text-rose-800'
                       : 'bg-emerald-100 text-emerald-800'
@@ -673,11 +673,11 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             </div>
 
             {/* Total / Deviation context */}
-            <div className="text-[10px] text-slate-500 truncate mt-0.5">
+            <div className="text-xs text-slate-600 truncate mt-0.5 font-medium">
               {desvioEuros === 0 ? (
-                <span className="text-emerald-700 font-semibold">Desvíos: 0 €</span>
+                <span className="text-emerald-700 font-bold">Desvíos: 0 €</span>
               ) : (
-                <span className="text-rose-700 font-semibold">
+                <span className="text-rose-700 font-bold">
                   Desvío total: +{formatoEuros(desvioEuros)}
                 </span>
               )}
@@ -696,7 +696,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
                 <span>⏳</span>
                 <span>Plazo Obra</span>
               </span>
@@ -704,7 +704,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'weeks' && activeDelta?.semanas !== undefined ? (
                 <span
-                  className={`text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
                     activeDelta.semanas > 0
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
@@ -714,7 +714,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-[9px] font-extrabold px-1 py-0.2 rounded-full ${
+                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
                     previewChoice.deltaSemanas > 2
                       ? 'bg-rose-100 text-rose-800'
                       : 'bg-slate-100 text-slate-700'
@@ -731,7 +731,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             </div>
 
             {/* Total / Scheduled context */}
-            <div className="text-[10px] text-slate-500 truncate mt-0.5">
+            <div className="text-xs text-slate-600 truncate mt-0.5 font-medium">
               <span>Previsto: {semanasPrevistas} sem</span>
             </div>
           </div>
@@ -748,7 +748,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
                 <span>🧠</span>
                 <span>Estrés</span>
               </span>
@@ -756,7 +756,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'stress' && activeDelta?.estres !== undefined ? (
                 <span
-                  className={`text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
                     activeDelta.estres > 0
                       ? 'bg-amber-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
@@ -766,7 +766,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-[9px] font-extrabold px-1 py-0.2 rounded-full ${
+                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
                     previewChoice.deltaEstres > 0
                       ? 'bg-amber-100 text-amber-800'
                       : 'bg-emerald-100 text-emerald-800'
@@ -780,7 +780,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             {/* Big Counter Value with dynamic Progress Bar */}
             <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5 leading-tight font-mono tracking-tight flex items-baseline justify-between">
               <span>{animatedEstres}%</span>
-              <span className="text-[9px] font-sans font-normal text-slate-400">
+              <span className="text-xs font-sans font-bold text-slate-500">
                 {animatedEstres < 30 ? 'Bajo control' : animatedEstres < 60 ? 'Tensión' : 'Alerta'}
               </span>
             </div>
@@ -800,7 +800,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             </div>
 
             {/* ASCII bar */}
-            <div className="text-[9px] text-slate-400 truncate mt-0.5 font-mono">
+            <div className="text-xs text-slate-500 truncate mt-0.5 font-mono">
               {estresBarra}
             </div>
           </div>
@@ -817,7 +817,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
                 <span>⚡</span>
                 <span>Energía</span>
               </span>
@@ -825,7 +825,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'energy' && activeDelta?.factura !== undefined ? (
                 <span
-                  className={`text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
                     activeDelta.factura > 0
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
@@ -835,7 +835,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-[9px] font-extrabold px-1 py-0.2 rounded-full ${
+                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
                     previewChoice.deltaFactura > 0
                       ? 'bg-rose-100 text-rose-800'
                       : 'bg-emerald-100 text-emerald-800'
@@ -852,7 +852,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             </div>
 
             {/* Total / Airtightness context */}
-            <div className="text-[10px] text-slate-500 truncate mt-0.5">
+            <div className="text-xs text-slate-600 truncate mt-0.5 font-medium">
               Hermetismo: {blowerDoorN50} ren/h
             </div>
           </div>

@@ -264,6 +264,7 @@ export default function App() {
       deltaSemanas: choice.deltaSemanas,
       deltaEstres: choice.deltaEstres,
       deltaFactura: choice.deltaFactura,
+      animation: choice.consequenceAnimation,
       prevIndicators,
       nextIndicators,
       onComplete: () => {

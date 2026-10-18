@@ -25,7 +25,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             className="h-9 sm:h-10 w-auto max-w-[130px] object-contain"
           />
         </div>
-        <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-full">
+        <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full">
           Asesoría Interactiva
         </span>
       </div>
@@ -49,44 +49,44 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         {/* Las dos voces en contraste */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-2">
           <div className="p-3.5 rounded-2xl bg-rose-50/80 border border-rose-200/90 text-rose-950 space-y-1">
-            <span className="text-[10px] font-black uppercase tracking-wider text-rose-800 block">
+            <span className="text-xs font-black uppercase tracking-wider text-rose-900 block">
               😈 El diablillo susurra:
             </span>
-            <p className="text-xs sm:text-sm font-semibold italic text-rose-950">
+            <p className="text-xs sm:text-sm font-semibold italic text-rose-950 leading-relaxed">
               «Empieza ya, luego lo vemos.»
             </p>
           </div>
           <div className="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 text-emerald-950 space-y-1">
-            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 block">
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-900 block">
               🛡️ Tu ángel asesor pregunta:
             </span>
-            <p className="text-xs sm:text-sm font-semibold italic text-emerald-950">
+            <p className="text-xs sm:text-sm font-semibold italic text-emerald-950 leading-relaxed">
               «¿Está todo definido?»
             </p>
           </div>
         </div>
 
         <p>
-          <strong>Tú eliges.</strong> Observa cómo cambian tu dinero, las semanas y tu estrés en tiempo real:
+          <strong>Tú eliges.</strong> Observa cómo cambian tu dinero, las semanas, tu estrés y el coste energético en tiempo real:
         </p>
 
-        {/* The 4 Core Variables Pill Grid - 1 column for (< 1080px), 4 columns for (>= 1080px) */}
-        <div className="grid grid-cols-1 min-[1080px]:grid-cols-4 gap-2.5 py-1">
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
-            <span className="text-sm font-black text-slate-900 block">💰 Dinero</span>
-            <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Precios cerrados</span>
+        {/* The 4 Core Variables Pill Grid - 2 columns on mobile with 2 rows per card, 4 columns on desktop */}
+        <div className="grid grid-cols-2 min-[1080px]:grid-cols-4 gap-2 sm:gap-2.5 py-1">
+          <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
+            <span className="text-xs sm:text-sm font-black text-slate-900 block truncate w-full">💰 Dinero</span>
+            <span className="text-xs text-slate-600 font-medium block truncate w-full">Precios cerrados</span>
           </div>
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
-            <span className="text-sm font-black text-slate-900 block">⏱️ Semanas</span>
-            <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Plazos en seco</span>
+          <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
+            <span className="text-xs sm:text-sm font-black text-slate-900 block truncate w-full">⏱️ Semanas</span>
+            <span className="text-xs text-slate-600 font-medium block truncate w-full">Plazos en seco</span>
           </div>
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
-            <span className="text-sm font-black text-slate-900 block">🧠 Estrés</span>
-            <span className="text-xs min-[1080px]:text-[10px] text-slate-500 font-medium block">Cero sorpresas</span>
+          <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
+            <span className="text-xs sm:text-sm font-black text-slate-900 block truncate w-full">🧠 Estrés</span>
+            <span className="text-xs text-slate-600 font-medium block truncate w-full">Cero sorpresas</span>
           </div>
-          <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/90 flex min-[1080px]:flex-col items-center justify-between min-[1080px]:justify-center text-left min-[1080px]:text-center shadow-2xs">
-            <span className="text-sm font-black text-emerald-950 block">⚡ Eficiencia</span>
-            <span className="text-xs min-[1080px]:text-[10px] text-emerald-700 font-medium block">Factura mínima</span>
+          <div className="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
+            <span className="text-xs sm:text-sm font-black text-emerald-950 block truncate w-full">⚡ Eficiencia</span>
+            <span className="text-xs text-emerald-700 font-medium block truncate w-full">Factura mínima</span>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
       {/* Discreet Footnote */}
       <div className="text-center pt-1">
-        <span className="text-[11px] text-slate-400 font-medium tracking-tight">
+        <span className="text-xs text-slate-600 font-medium tracking-normal">
           Simulación educativa con cifras ilustrativas.
         </span>
       </div>

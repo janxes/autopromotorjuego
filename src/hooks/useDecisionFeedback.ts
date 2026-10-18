@@ -17,6 +17,11 @@ export interface DecisionConsequencesParams {
   deltaFactura: number;
   prevIndicators: GameIndicators;
   nextIndicators: GameIndicators;
+  animation?: {
+    icon: string;
+    description: string;
+    visualType?: string;
+  };
   onComplete: () => void;
 }
 
@@ -36,6 +41,11 @@ export interface DecisionFeedbackState {
   deltaSemanas: number;
   deltaEstres: number;
   deltaFactura: number;
+  animation?: {
+    icon: string;
+    description: string;
+    visualType?: string;
+  };
   prevIndicators: GameIndicators | null;
   nextIndicators: GameIndicators | null;
 }
@@ -57,6 +67,7 @@ export function useDecisionFeedback() {
     deltaSemanas: 0,
     deltaEstres: 0,
     deltaFactura: 0,
+    animation: undefined,
     prevIndicators: null,
     nextIndicators: null,
   });
@@ -122,6 +133,7 @@ export function useDecisionFeedback() {
       deltaSemanas: params.deltaSemanas,
       deltaEstres: params.deltaEstres,
       deltaFactura: params.deltaFactura,
+      animation: params.animation,
       prevIndicators: params.prevIndicators,
       nextIndicators: params.nextIndicators,
     });

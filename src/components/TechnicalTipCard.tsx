@@ -47,10 +47,10 @@ export const TechnicalTipCard: React.FC<TechnicalTipCardProps> = ({
       {/* Part 1: Immediate Consequence Warning */}
       <div className="flex items-start gap-2.5">
         <div className="p-1 rounded-lg bg-amber-200/80 text-amber-900 shrink-0 mt-0.5">
-          <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-amber-800" />
+          <ShieldAlert className="w-5 h-5 text-amber-800" />
         </div>
         <div className="space-y-0.5">
-          <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 block">
+          <span className="text-xs font-black uppercase tracking-wider text-amber-900 block">
             Alerta pedagógica · Fricción en obra tradicional
           </span>
           <h4 className="text-xs sm:text-sm font-extrabold text-amber-950 leading-snug">
@@ -60,15 +60,15 @@ export const TechnicalTipCard: React.FC<TechnicalTipCardProps> = ({
       </div>
 
       {/* Part 2: Plain Language Advice */}
-      <div className="p-3 rounded-xl bg-white/95 border border-amber-200 text-xs text-slate-800 leading-relaxed space-y-1 shadow-2xs">
-        <strong className="text-amber-900 font-bold block text-[11px] uppercase tracking-wider">
+      <div className="p-3.5 rounded-xl bg-white/95 border border-amber-200 text-xs sm:text-sm text-slate-800 leading-relaxed space-y-1 shadow-2xs">
+        <strong className="text-amber-950 font-bold block text-xs uppercase tracking-wider">
           La lección para no caer en la trampa:
         </strong>
-        <p className="text-slate-700 font-medium">{advice}</p>
+        <p className="text-slate-800 font-medium">{advice}</p>
       </div>
 
       {/* Part 3: Real Constructor Friction Quote */}
-      <div className="text-xs text-amber-950 italic pl-3 border-l-3 border-amber-500 font-serif bg-amber-100/50 py-1.5 pr-2 rounded-r-lg">
+      <div className="text-xs sm:text-sm text-amber-950 italic pl-3 border-l-3 border-amber-500 font-serif bg-amber-100/60 py-2 pr-2.5 rounded-r-lg font-medium">
         {quote}
       </div>
 
@@ -76,38 +76,38 @@ export const TechnicalTipCard: React.FC<TechnicalTipCardProps> = ({
       <div className="rounded-xl border border-amber-300/80 bg-amber-100/60 overflow-hidden">
         <button
           onClick={() => setShowDeepDetail(!showDeepDetail)}
-          className="w-full px-3 py-2 text-left text-[11px] font-bold text-amber-950 hover:bg-amber-200/50 flex items-center justify-between gap-1 transition"
+          className="w-full px-3.5 py-2.5 text-left text-xs sm:text-sm font-bold text-amber-950 hover:bg-amber-200/50 flex items-center justify-between gap-1 transition"
         >
           <div className="flex items-center gap-1.5">
-            <Lightbulb className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+            <Lightbulb className="w-4 h-4 text-amber-700 shrink-0" />
             <span>Analogía cotidiana: <strong>{activeAnalogy.title}</strong></span>
           </div>
-          {showDeepDetail ? <ChevronUp className="w-3.5 h-3.5 shrink-0" /> : <ChevronDown className="w-3.5 h-3.5 shrink-0" />}
+          {showDeepDetail ? <ChevronUp className="w-4 h-4 shrink-0" /> : <ChevronDown className="w-4 h-4 shrink-0" />}
         </button>
 
         {showDeepDetail && (
-          <div className="p-3 bg-white/95 border-t border-amber-200 text-xs text-slate-800 space-y-2.5">
+          <div className="p-3.5 bg-white/95 border-t border-amber-200 text-xs sm:text-sm text-slate-800 space-y-2.5">
             {/* Analogy Story */}
             <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-900 block">
                 📖 Para entenderlo de un vistazo:
               </span>
-              <p className="text-xs text-slate-700 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-normal">
                 {activeAnalogy.story}
               </p>
             </div>
 
             {/* Core Lesson */}
-            <div className="p-2 rounded-lg bg-amber-50 border border-amber-200/90 text-xs text-amber-950 font-semibold flex items-start gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200/90 text-xs sm:text-sm text-amber-950 font-semibold flex items-start gap-1.5">
+              <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <span>{activeAnalogy.lesson}</span>
             </div>
 
             {/* Adaptable to each specific case */}
             {casesList.length > 0 && (
               <div className="space-y-2 pt-1 border-t border-amber-100">
-                <div className="flex items-center gap-1 text-[11px] font-bold text-slate-700">
-                  <Compass className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                <div className="flex items-center gap-1 text-xs font-bold text-slate-800">
+                  <Compass className="w-4 h-4 text-amber-700 shrink-0" />
                   <span>¿Cómo se adapta a tu caso particular?</span>
                 </div>
 
@@ -118,7 +118,7 @@ export const TechnicalTipCard: React.FC<TechnicalTipCardProps> = ({
                       key={idx}
                       type="button"
                       onClick={() => setSelectedCaseIndex(idx)}
-                      className={`text-[10px] px-2 py-1 rounded-md font-bold transition text-left ${
+                      className={`text-xs px-2.5 py-1 rounded-md font-bold transition text-left ${
                         selectedCaseIndex === idx
                           ? 'bg-amber-600 text-white shadow-2xs'
                           : 'bg-amber-100/80 text-amber-900 hover:bg-amber-200/80'
@@ -131,8 +131,8 @@ export const TechnicalTipCard: React.FC<TechnicalTipCardProps> = ({
 
                 {/* Selected case tip */}
                 {casesList[selectedCaseIndex] && (
-                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-700 leading-relaxed animate-in fade-in duration-150">
-                    <span className="font-bold text-amber-900 block mb-0.5">
+                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 leading-relaxed animate-in fade-in duration-150">
+                    <span className="font-bold text-amber-950 block mb-0.5">
                       Consejo para este caso:
                     </span>
                     {casesList[selectedCaseIndex].tip}

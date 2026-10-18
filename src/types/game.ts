@@ -1,4 +1,4 @@
-export type CharacterId = 'architect' | 'builder' | 'partner' | 'advisor' | 'surveyor';
+export type CharacterId = 'architect' | 'builder' | 'partner' | 'advisor' | 'surveyor' | 'devil';
 
 export interface Character {
   id: CharacterId;
@@ -64,6 +64,11 @@ export interface CardChoice {
     narrative: string;
   };
   isPassivhausWay?: boolean;
+  consequenceAnimation?: {
+    icon: string;
+    description: string;
+    visualType?: string;
+  };
 }
 
 export interface GameCard {
@@ -79,6 +84,8 @@ export interface GameCard {
   houseStageAfter: HouseStage;
   isSurpriseCard?: boolean;
   phaseAnalogy?: PhaseAnalogy;
+  devilVoice?: string;
+  advisorVoice?: string;
 }
 
 export interface PlayerProfile {

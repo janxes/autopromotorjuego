@@ -138,7 +138,7 @@ Comienzas con una parcela limpia, 250.000 € y la ilusión intacta. Antes de ar
       {
         id: 'L1_OPCION_B',
         letter: 'B',
-        label: 'Opción B (Catálogo Industrializado Passivhaus): Elegir modelo prediseñado con maqueta digital 3D y precio cerrado',
+        label: 'Opción B (Catálogo Industrializado Passivhaus): Elegir modelo prediseñado con el plano de la vivienda y precio cerrado',
         description: 'Seleccionas una vivienda de catálogo en madera técnica con precio notarial cerrado, desglose claro entre fase técnica y acabados, y aprobación inmediata.',
         isBadDecision: false,
         recommended: true,
@@ -148,7 +148,7 @@ Comienzas con una parcela limpia, 250.000 € y la ilusión intacta. Antes de ar
       L1_OPCION_A: {
         impacto: '4 meses de silencio administrativo y llamadas sin respuesta. Cuando llegan los presupuestos, dos constructores ya han quebrado, otro sube un 20% por "alza del acero" y los tipos de interés de la hipoteca han subido 75 puntos básicos. Has perdido 14 semanas y 11.500 € en comisiones e intereses de carencia.',
         porqueTecnico: 'Los presupuestos tradicionales con partidas abiertas no tienen ingeniería previa de detalle. El constructor traslada el riesgo al autopromotor mediante "precios contradictorios" y partidas alzadas una vez que estás comprometido.',
-        alternativaIndustrializada: 'Un modelo por catálogo con maqueta digital milimétrica congela las compras de madera técnica en taller y fija un contrato llave en mano de precio vinculante ante notario.',
+        alternativaIndustrializada: 'Un modelo por catálogo con el plano de la vivienda milimétrico congela las compras de madera técnica en taller y fija un contrato llave en mano de precio vinculante ante notario.',
         penalizacionPresupuesto: 11500,
         penalizacionSemanas: 16,
         penalizacionEstres: 35,
@@ -303,7 +303,7 @@ export const CHECKLIST_PREGUNTAS_TRAMPA = [
   },
   {
     num: '3',
-    pregunta: '¿Existe una maqueta digital 3D donde cada conducto y paso de cables ya esté resuelto antes de cortar madera?',
+    pregunta: '¿Existe un plano de la vivienda milimétrico donde cada conducto y paso de cables ya esté resuelto antes de cortar madera?',
     porQue: 'En obra tradicional, los fontaneros y electricistas pican el ladrillo con radial rompiendo el aislamiento térmico.',
     respuestaPassivhaus: 'Todo pre-mecanizado en taller con precisión de relojero, sin dar un solo martillazo en la obra.',
   },

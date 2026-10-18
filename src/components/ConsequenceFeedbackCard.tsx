@@ -65,9 +65,26 @@ export const ConsequenceFeedbackCard: React.FC<ConsequenceFeedbackCardProps> = (
       </div>
 
       {/* Narrative Explanation - single column */}
-      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 leading-relaxed font-medium w-full">
+      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 leading-relaxed font-medium w-full">
         {consequenceText}
       </div>
+
+      {/* Animated Visual Cue corresponding to Phase Consequence */}
+      {feedback.animation && (
+        <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/90 flex items-start gap-2.5 text-left animate-in fade-in duration-200 w-full shadow-2xs">
+          <div className="text-2xl p-1.5 rounded-lg bg-white border border-amber-200 shadow-2xs shrink-0">
+            {feedback.animation.icon}
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs font-black uppercase tracking-wider text-amber-900 block">
+              Animación de consecuencias en obra:
+            </span>
+            <p className="text-xs sm:text-sm text-amber-950 font-medium leading-snug">
+              {feedback.animation.description}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* 4 STAGGERED CONSEQUENCE ITEMS - strictly 1 single column in all sections */}
       <div className="flex flex-col space-y-2.5 w-full">

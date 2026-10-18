@@ -16,7 +16,7 @@ const STAGE_DESCRIPTIONS: Record<HouseStage, { title: string; subtitle: string; 
     icon: '📍',
   },
   2: {
-    title: 'Fase 2: Maqueta 3D Milimétrica',
+    title: 'Fase 2: El Plano de la Vivienda',
     subtitle: 'Como un puzle: cada tubo y cable resuelto antes de cortar madera',
     icon: '📐',
   },
