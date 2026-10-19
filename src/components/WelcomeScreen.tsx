@@ -61,36 +61,53 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           firmar folios abiertos, no contrastar la viabilidad de la parcela, añadir soluciones Passivhaus como un menú a la carta o dejar la coordinación en un grupo de WhatsApp.
         </p>
 
+        {/* Core Autopromotor Insight: Por eso lo encargas */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50/90 border-2 border-emerald-300 text-emerald-950 space-y-2 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">💡</span>
+            <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-emerald-900">
+              La gran clave del autopromotor: ¿Por qué lo encargas?
+            </span>
+          </div>
+          <p className="text-sm sm:text-base font-bold text-emerald-950 leading-snug">
+            Construir no tiene por qué ser una pesadilla de imprevistos que asumas tú en el barro.
+          </p>
+          <p className="text-xs sm:text-sm text-emerald-900/90 font-medium leading-relaxed">
+            En la <strong>obra tradicional</strong>, cada lluvia, retraso y sobrecoste te toca sufrirlo a ti.
+            Con la <strong>industrialización en madera técnica y Passivhaus de Medgón</strong>, delegas toda la complejidad técnica en fábrica: <strong>precio cerrado, entrega en semanas y máximo confort sin sorpresas</strong>.
+          </p>
+        </div>
+
         {/* Seth Godin Visual Duality: Two Perspectives */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-2">
           <div className="p-3.5 rounded-2xl bg-rose-50/80 border border-rose-200/90 text-rose-950 space-y-1">
             <span className="text-xs font-black uppercase tracking-wider text-rose-900 block">
-              😈 El diablillo susurra:
+              😈 En la obra tradicional asumes tú:
             </span>
             <p className="text-xs sm:text-sm font-semibold italic text-rose-950 leading-relaxed">
-              «Empieza ya, luego lo vemos.»
+              «Imprevistos, retrasos de meses y facturas abiertas.»
             </p>
           </div>
           <div className="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 text-emerald-950 space-y-1">
             <span className="text-xs font-black uppercase tracking-wider text-emerald-900 block">
-              🛡️ Tu ángel asesor pregunta:
+              🛡️ Encargándolo a Medgón obtienes:
             </span>
             <p className="text-xs sm:text-sm font-semibold italic text-emerald-950 leading-relaxed">
-              «¿Está todo definido?»
+              «Fabricación precisa, precio cerrado y entrega rápida.»
             </p>
           </div>
         </div>
 
         {/* Introductory Help and Accessibility Link */}
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-start gap-2.5">
             <HelpCircle className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
             <div className="space-y-0.5">
-              <span className="text-xs sm:text-sm font-black text-emerald-950 block">
-                ¿Cómo se juega y cuál es la intención de este juego?
+              <span className="text-xs sm:text-sm font-black text-slate-900 block">
+                ¿Cómo funciona la simulación?
               </span>
-              <p className="text-[11px] sm:text-xs text-emerald-900/90 font-medium leading-relaxed">
-                Descubre cómo tomar decisiones estratégicas de autopromoción y cómo utilizar las <strong>opciones de accesibilidad</strong> (como ampliar el tamaño de texto con el botón <strong>«A»</strong> o activar el modo de alto contraste).
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                10 decisiones rápidas. Puedes ampliar el tamaño de texto con el botón <strong>«A»</strong> del menú superior o activar alto contraste.
               </p>
             </div>
           </div>
@@ -98,7 +115,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             <button
               type="button"
               onClick={onOpenHelp}
-              className="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs transition shrink-0 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs transition shrink-0 cursor-pointer"
             >
               <HelpCircle className="w-3.5 h-3.5" />
               <span>Ver guía de ayuda</span>
@@ -106,134 +123,55 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           )}
         </div>
 
-        <p>
-          <strong>Tú eliges.</strong> Observa cómo cambian tu dinero, las semanas, tu estrés y el coste energético en tiempo real:
+        <p className="text-xs sm:text-sm text-slate-700 font-medium">
+          Observa en tiempo real el impacto de cada decisión en tus 4 indicadores clave:
         </p>
 
-        {/* The 4 Core Variables Pill Grid - 2 columns on mobile with 2 rows per card, 4 columns on desktop */}
-        <div className="grid grid-cols-2 min-[1080px]:grid-cols-4 gap-2 sm:gap-2.5 py-1">
+        {/* The 4 Core Variables Pill Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 py-1">
           <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
             <span className="text-xs sm:text-sm font-black text-slate-900 block truncate w-full">💰 Dinero</span>
             <span className="text-xs text-slate-600 font-medium block truncate w-full">Precios cerrados</span>
           </div>
           <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
             <span className="text-xs sm:text-sm font-black text-slate-900 block truncate w-full">⏱️ Semanas</span>
-            <span className="text-xs text-slate-600 font-medium block truncate w-full">Plazos en seco</span>
+            <span className="text-xs text-slate-600 font-medium block truncate w-full">Montaje en días</span>
           </div>
           <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
             <span className="text-xs sm:text-sm font-black text-slate-900 block truncate w-full">🧠 Estrés</span>
-            <span className="text-xs text-slate-600 font-medium block truncate w-full">Cero sorpresas</span>
+            <span className="text-xs text-slate-600 font-medium block truncate w-full">Cero imprevistos</span>
           </div>
           <div className="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col items-center justify-center text-center shadow-2xs gap-0.5 min-w-0">
-            <span className="text-xs sm:text-sm font-black text-emerald-950 block truncate w-full">⚡ Eficiencia</span>
-            <span className="text-xs text-emerald-700 font-medium block truncate w-full">Factura mínima</span>
+            <span className="text-xs sm:text-sm font-black text-emerald-950 block truncate w-full">⚡ Factura</span>
+            <span className="text-xs text-emerald-700 font-medium block truncate w-full">Passivhaus mínima</span>
           </div>
         </div>
 
-        {/* MODE SELECTOR: Full (10 phases) vs Quick (5 phases) */}
-        <div className="pt-2 space-y-2">
-          <span className="text-xs font-black uppercase tracking-wider text-slate-900 block">
-            Elige tu modo de simulación:
-          </span>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {/* Mode 1: Full Journey */}
-            <button
-              type="button"
-              onClick={() => setSelectedMode('full')}
-              className={`p-3.5 rounded-2xl border text-left transition relative cursor-pointer ${
-                selectedMode === 'full'
-                  ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-500/30'
-                  : 'bg-white border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Map className="w-4 h-4 text-emerald-700 shrink-0" />
-                  <span className="text-xs sm:text-sm font-black text-slate-900">
-                    «De la parcela a las llaves»
-                  </span>
-                </div>
-                {selectedMode === 'full' && (
-                  <Check className="w-4 h-4 text-emerald-700 shrink-0" />
-                )}
-              </div>
-              <p className="text-[11px] text-slate-600 mt-1 font-medium leading-snug">
-                El recorrido completo en <strong>10 fases</strong> estratégicas (~5–8 min).
-              </p>
-              <span className="inline-block mt-2 text-[10px] font-bold text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md">
-                Recomendado
-              </span>
-            </button>
-
-            {/* Mode 2: Quick Play */}
-            <button
-              type="button"
-              onClick={() => setSelectedMode('quick')}
-              className={`p-3.5 rounded-2xl border text-left transition relative cursor-pointer ${
-                selectedMode === 'quick'
-                  ? 'bg-sky-50/90 border-sky-600 ring-2 ring-sky-500/30'
-                  : 'bg-white border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-sky-700 shrink-0" />
-                  <span className="text-xs sm:text-sm font-black text-slate-900">
-                    «Partida rápida»
-                  </span>
-                </div>
-                {selectedMode === 'quick' && (
-                  <Check className="w-4 h-4 text-sky-700 shrink-0" />
-                )}
-              </div>
-              <p className="text-[11px] text-slate-600 mt-1 font-medium leading-snug">
-                <strong>5 decisiones clave</strong> express seleccionadas (~3–4 min).
-              </p>
-              <span className="inline-block mt-2 text-[10px] font-bold text-sky-800 bg-sky-100/70 px-2 py-0.5 rounded-md">
-                Express
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Seth Godin Highlight Callout: Freedom to experiment */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/85 border-l-4 border-amber-500 text-amber-950 space-y-1.5 shadow-2xs">
-          <p className="text-base sm:text-lg font-black text-amber-950 leading-snug">
+        {/* Highlight Callout: Freedom to experiment */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/85 border-l-4 border-amber-500 text-amber-950 space-y-1 shadow-2xs">
+          <p className="text-sm sm:text-base font-black text-amber-950 leading-snug">
             «Aquí, equivocarse no cuesta una hipoteca.»
           </p>
           <p className="text-xs sm:text-sm text-amber-900/95 font-medium leading-relaxed">
-            Puedes equivocarte. Aquí sale gratis. También puedes rectificar y comparar qué habría ocurrido si hubieras tomado el otro camino.
+            Prueba ambos caminos. Si tomas una mala decisión, verás la consecuencia al instante y podrás rectificar gratis para comparar.
           </p>
         </div>
-
-        <p>
-          En {selectedMode === 'full' ? 'unos 5–8 minutos' : 'tres minutos'} descubrirás qué preguntar antes de construir, qué dejar cerrado en contrato y qué no confiar jamás a la improvisación.
-        </p>
-
-        <p className="font-bold text-slate-950">
-          Al terminar, tendrás algo más útil que una puntuación: mejores preguntas para construir tu casa.
-        </p>
       </div>
 
-      {/* Main Call to Action Buttons */}
+      {/* Main Single Action Button (No Express vs Full friction) */}
       <div className="space-y-2.5 pt-2 border-t border-slate-100">
         <button
-          onClick={() => onStart(selectedMode)}
-          className="w-full py-4 px-6 rounded-2xl bg-slate-950 hover:bg-black text-white font-black text-base shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 flex items-center justify-center gap-2.5 transition active:scale-[0.99] cursor-pointer"
+          onClick={() => onStart('full')}
+          className="w-full py-4 px-6 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-base sm:text-lg shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2.5 transition active:scale-[0.99] cursor-pointer"
         >
-          <span>
-            {selectedMode === 'full'
-              ? 'Empezar el recorrido completo (10 fases)'
-              : 'Empezar partida rápida (5 fases)'}
-          </span>
-          <ArrowRight className="w-5 h-5 text-emerald-400" />
+          <span>Comenzar simulación (10 decisiones clave)</span>
+          <ArrowRight className="w-5 h-5 text-emerald-300" />
         </button>
 
         {hasSavedProgress && onResume && (
           <button
             onClick={onResume}
-            className="w-full py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
             <span>Continuar donde lo dejé (Hito {savedTurn} de {totalTurns})</span>
@@ -243,8 +181,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
       {/* Discreet Footnote */}
       <div className="text-center pt-1">
-        <span className="text-xs text-slate-600 font-medium tracking-normal">
-          Simulación educativa con cifras ilustrativas.
+        <span className="text-xs text-slate-500 font-medium">
+          Duración estimada: ~4 minutos • Texto directo y adaptado a móvil.
         </span>
       </div>
     </div>

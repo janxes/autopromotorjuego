@@ -135,7 +135,7 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
         {/* Swipe Left Stamp Overlay */}
         <motion.div
           style={{ opacity: opacityLeftBadge }}
-          className="absolute top-4 left-4 z-20 bg-slate-900 text-white font-extrabold text-[11px] px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm pointer-events-none"
+          className="absolute top-4 left-4 z-20 bg-slate-900 text-white font-black text-xs px-3 py-1.5 rounded-lg uppercase tracking-wider shadow-sm pointer-events-none"
         >
           {card.leftChoice.label}
         </motion.div>
@@ -143,7 +143,7 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
         {/* Swipe Right Stamp Overlay */}
         <motion.div
           style={{ opacity: opacityRightBadge }}
-          className="absolute top-4 right-4 z-20 bg-emerald-600 text-white font-extrabold text-[11px] px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm pointer-events-none"
+          className="absolute top-4 right-4 z-20 bg-emerald-600 text-white font-black text-xs px-3 py-1.5 rounded-lg uppercase tracking-wider shadow-sm pointer-events-none"
         >
           {card.rightChoice.label}
         </motion.div>
@@ -151,18 +151,18 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
         {/* Scenario Header: Hito Number & Scene Title */}
         <div className="w-full text-left border-b border-slate-100 pb-2.5 mb-3">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
               {card.level === 0 ? 'Fase Inicial' : `Hito ${card.level || ''} de 10`}
             </span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               {card.character.role}
             </span>
           </div>
-          <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mt-1 leading-snug">
+          <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mt-1.5 leading-snug">
             {card.sceneTitle}
           </h2>
-          <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
-            Lee la situación y lo que dice cada parte antes de elegir:
+          <p className="text-xs sm:text-sm text-emerald-950 font-bold mt-1">
+            ¿Asumir tú las adversidades en obra o encargar la certeza a Medgón?
           </p>
         </div>
 
@@ -228,36 +228,36 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
                 e.stopPropagation();
                 setShowAnalogy(!showAnalogy);
               }}
-              className="w-full px-3 py-2.5 flex items-center justify-between text-xs sm:text-sm font-bold text-amber-950 hover:bg-amber-100/70 transition cursor-pointer"
+              className="w-full px-3.5 py-3 flex items-center justify-between text-base font-bold text-amber-950 hover:bg-amber-100/70 transition cursor-pointer"
             >
-              <div className="flex items-center gap-1.5 min-w-0 pr-1">
-                <Lightbulb className="w-4 h-4 text-amber-600 shrink-0" />
-                <span className="truncate">
-                  Analogía de la fase: <strong>{card.phaseAnalogy.title}</strong>
+              <div className="flex items-center gap-2 min-w-0 pr-1">
+                <Lightbulb className="w-5 h-5 text-amber-600 shrink-0" />
+                <span className="truncate text-base leading-snug">
+                  Analogía de la fase: <strong className="font-black text-amber-950">{card.phaseAnalogy.title}</strong>
                 </span>
               </div>
               {showAnalogy ? (
-                <ChevronUp className="w-4 h-4 text-amber-800 shrink-0" />
+                <ChevronUp className="w-5 h-5 text-amber-800 shrink-0" />
               ) : (
-                <ChevronDown className="w-4 h-4 text-amber-800 shrink-0" />
+                <ChevronDown className="w-5 h-5 text-amber-800 shrink-0" />
               )}
             </button>
 
             {showAnalogy && (
-              <div className="p-3.5 bg-white/95 border-t border-amber-200/80 text-xs sm:text-sm text-slate-800 space-y-2.5 animate-in fade-in duration-150">
-                <div className="text-xs sm:text-sm text-amber-950 font-serif italic border-l-3 border-amber-500 pl-2.5 bg-amber-50/80 py-1.5 rounded-r font-medium">
+              <div className="p-4 bg-white/95 border-t border-amber-200/80 text-base text-slate-800 space-y-3 animate-in fade-in duration-150">
+                <div className="text-base text-amber-950 font-serif italic border-l-4 border-amber-500 pl-3 bg-amber-50/80 py-2.5 rounded-r font-medium leading-relaxed">
                   «{card.phaseAnalogy.metaphor}»
                 </div>
-                <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-normal">
+                <p className="text-base text-slate-800 leading-relaxed font-normal">
                   {card.phaseAnalogy.explanation}
                 </p>
 
                 {card.phaseAnalogy.cases && card.phaseAnalogy.cases.length > 0 && (
-                  <div className="pt-2 border-t border-slate-100 space-y-2">
-                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                  <div className="pt-2.5 border-t border-slate-100 space-y-2.5">
+                    <span className="text-sm sm:text-base font-bold text-slate-800 uppercase tracking-wider block">
                       🎯 Adaptable a tu caso concreto:
                     </span>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-2">
                       {card.phaseAnalogy.cases.map((c, idx) => (
                         <button
                           key={idx}
@@ -266,10 +266,10 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
                             e.stopPropagation();
                             setSelectedCaseIdx(idx);
                           }}
-                          className={`text-xs px-2.5 py-1 rounded-md font-bold transition cursor-pointer ${
+                          className={`text-sm sm:text-base px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
                             selectedCaseIdx === idx
                               ? 'bg-amber-700 text-white shadow-2xs'
-                              : 'bg-amber-100/80 text-amber-900 hover:bg-amber-200/80'
+                              : 'bg-amber-100/90 text-amber-950 hover:bg-amber-200'
                           }`}
                         >
                           {c.label}
@@ -277,8 +277,8 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
                       ))}
                     </div>
                     {card.phaseAnalogy.cases[selectedCaseIdx] && (
-                      <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 leading-relaxed">
-                        <span className="font-bold text-amber-950 block mb-0.5">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-base text-slate-800 leading-relaxed">
+                        <span className="font-black text-amber-950 block mb-1 text-base">
                           Para tu proyecto:
                         </span>
                         {card.phaseAnalogy.cases[selectedCaseIdx].tip}
@@ -293,7 +293,7 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
 
         {/* Compact Swipe hint */}
         <div className="mt-2.5 text-center">
-          <span className="text-xs text-slate-500 font-medium">
+          <span className="text-xs sm:text-sm text-slate-600 font-semibold">
             {isLocked ? 'Procesando decisión...' : '← Arrastra la tarjeta o pulsa una opción abajo →'}
           </span>
         </div>
@@ -326,7 +326,7 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
           }`}
         >
           {/* Fila 1: Indicador y flecha */}
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full min-w-0 gap-1 overflow-hidden">
             <span
               className={`w-5 h-5 rounded-md font-bold text-xs flex items-center justify-center transition shrink-0 ${
                 isLeftSelected
@@ -337,11 +337,12 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
               {isLeftSelected ? <Check className="w-3.5 h-3.5" /> : <ArrowLeft className="w-3.5 h-3.5" />}
             </span>
             <span
-              className={`text-xs font-black uppercase tracking-wider ${
-                isLeftSelected ? 'text-slate-200' : 'text-slate-600'
+              className={`text-[11px] sm:text-xs font-black uppercase tracking-tight truncate leading-none min-w-0 ${
+                isLeftSelected ? 'text-slate-200' : 'text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200'
               }`}
+              style={{ fontStretch: 'condensed', letterSpacing: '-0.02em' }}
             >
-              {isLeftSelected ? 'Seleccionada' : 'Opción A'}
+              {isLeftSelected ? 'Seleccionada' : 'Tradicional'}
             </span>
           </div>
 
@@ -356,7 +357,7 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
             </h4>
             {card.leftChoice.subtext && (
               <p
-                className={`text-xs mt-1 line-clamp-2 leading-snug break-words font-medium ${
+                className={`text-xs sm:text-sm mt-1 line-clamp-2 leading-snug break-words font-medium ${
                   isLeftSelected ? 'text-slate-200' : 'text-slate-600'
                 }`}
               >
@@ -391,13 +392,14 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
           }`}
         >
           {/* Fila 1: Indicador y flecha */}
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full min-w-0 gap-1 overflow-hidden">
             <span
-              className={`text-xs font-black uppercase tracking-wider ${
-                isRightSelected ? 'text-emerald-100' : 'text-emerald-800'
+              className={`text-[11px] sm:text-xs font-black uppercase tracking-tight truncate leading-none min-w-0 ${
+                isRightSelected ? 'text-emerald-100' : 'text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200'
               }`}
+              style={{ fontStretch: 'condensed', letterSpacing: '-0.02em' }}
             >
-              {isRightSelected ? 'Seleccionada' : 'Opción B'}
+              {isRightSelected ? 'Seleccionada' : 'Industrializado'}
             </span>
             <span
               className={`w-5 h-5 rounded-md font-bold text-xs flex items-center justify-center transition shrink-0 ${
