@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameCard, CardChoice } from '../types/game';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import { ArrowLeft, ArrowRight, Check, Lightbulb, ChevronDown, ChevronUp, Compass } from 'lucide-react';
@@ -21,6 +21,17 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
   const [hoveredChoice, setHoveredChoice] = useState<'left' | 'right' | null>(null);
   const [showAnalogy, setShowAnalogy] = useState(false);
   const [selectedCaseIdx, setSelectedCaseIdx] = useState(0);
+
+  // Automatically scroll to the top so the introduction, character and situation are always visible
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const el = document.getElementById('scenario-top-anchor');
+    if (el) {
+      el.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+  }, [card.id]);
 
   // Drag physics for mobile swipe
   const x = useMotionValue(0);
@@ -109,7 +120,7 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
   const isRightSelected = selectedChoiceId === card.rightChoice.id;
 
   return (
-    <div className="w-full max-w-lg mx-auto flex flex-col items-center space-y-3 sm:space-y-4">
+    <div id="scenario-top-anchor" className="w-full max-w-lg mx-auto flex flex-col items-center space-y-3 sm:space-y-4 scroll-mt-32">
       {/* Reigns Central Character Card */}
       <motion.div
         style={{ x, rotate }}
@@ -136,6 +147,24 @@ export const ReignsCard: React.FC<ReignsCardProps> = ({
         >
           {card.rightChoice.label}
         </motion.div>
+
+        {/* Scenario Header: Hito Number & Scene Title */}
+        <div className="w-full text-left border-b border-slate-100 pb-2.5 mb-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              {card.level === 0 ? 'Fase Inicial' : `Hito ${card.level || ''} de 10`}
+            </span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              {card.character.role}
+            </span>
+          </div>
+          <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mt-1 leading-snug">
+            {card.sceneTitle}
+          </h2>
+          <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
+            Lee la situación y lo que dice cada parte antes de elegir:
+          </p>
+        </div>
 
         {/* Character Lockup */}
         <div className="flex items-center gap-3">

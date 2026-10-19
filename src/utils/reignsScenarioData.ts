@@ -118,7 +118,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     rightChoice: {
       id: 'V1_REVISAR_VIABILIDAD',
-      label: 'Revisar la viabilidad antes',
+      label: 'Revisar la viabilidad antes de comprometerme',
       subtext: 'Comprobar ficha urbanística, accesos y pendiente',
       deltaPresupuesto: 0,
       deltaSemanas: 1,
@@ -278,7 +278,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     leftChoice: {
       id: 'P3_SEGUIR_ESPERANDO',
-      label: 'Seguir esperando y comparar cifras',
+      label: 'Seguir esperando y comparar las cifras',
       subtext: 'Pedir más ofertas tradicionales con partidas abiertas',
       deltaPresupuesto: -4800,
       deltaSemanas: 8,
@@ -312,7 +312,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     rightChoice: {
       id: 'P3_DEFINIR_ALCANCE',
-      label: 'Definir alcance y propuestas completas',
+      label: 'Definir el alcance y comparar propuestas completas',
       subtext: 'Partir de un modelo de catálogo con adaptaciones y condiciones claras',
       deltaPresupuesto: 0,
       deltaSemanas: 2,
@@ -409,7 +409,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     rightChoice: {
       id: 'A4_CODISEÑO_SISTEMA',
-      label: 'Codiseño técnico integrado',
+      label: 'Coordinar diseño y fabricación antes de empezar',
       subtext: 'Coordinar arquitecto y sistema constructivo antes del visado',
       deltaPresupuesto: 0,
       deltaSemanas: 1,
@@ -472,7 +472,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     leftChoice: {
       id: 'PH5_MENU_A_LA_CARTA',
-      label: 'Elegir mejoras sin verificar',
+      label: 'Elegir algunas mejoras sin comprobar el conjunto',
       subtext: 'Poner elementos aislados "tipo Passivhaus" sin comprobar el conjunto',
       deltaPresupuesto: -4500,
       deltaSemanas: 3,
@@ -506,7 +506,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     rightChoice: {
       id: 'PH5_INTEGRAR_5_PRINCIPIOS',
-      label: 'Integrar los cinco principios',
+      label: 'Integrar los cinco principios y verificar el proyecto',
       subtext: 'Verificar el proyecto con cálculo PHPP global',
       deltaPresupuesto: 0,
       deltaSemanas: 1,
@@ -550,7 +550,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     character: CHARACTERS.advisor,
     messageType: 'in_person',
     prompt:
-      '«Toca decidir el sistema térmico. El instalador nos propone una bomba de calor aerotérmica de 16 kW con suelo radiante por 22.000 €, diciendo: "Metemos una máquina grande con potencia de sobra y así no hace falta gastar tanto en aislamientos de fachada". ¿Invertimos en máquina potente o en abrigo térmico continuo?»',
+      '«Con el proyecto definido y los cinco principios Passivhaus sobre la mesa, toca dimensionar las instalaciones térmicas. El instalador nos propone una bomba aerotérmica de 16 kW con suelo radiante por 22.000 €, diciendo: "Metemos una máquina grande con potencia de sobra y así no hace falta gastar tanto en aislamientos de fachada". ¿Sobredimensionamos la instalación o priorizamos el abrigo térmico?»',
     detailContext:
       'Una máquina grande en una casa mal aislada es como poner una estufa enorme en una tienda de campaña: gastará una barbaridad todos los meses para siempre.',
     devilVoice:
@@ -576,7 +576,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     leftChoice: {
       id: 'M6_SOBREDIMENSIONAR',
-      label: 'Priorizar máquina grande',
+      label: 'Sobredimensionar la instalación',
       subtext: 'Bomba de 16 kW con menos aislamiento en fachadas',
       deltaPresupuesto: -5500,
       deltaSemanas: 2,
@@ -610,7 +610,7 @@ export const REIGNS_SCENARIOS_FULL: GameCard[] = [
     },
     rightChoice: {
       id: 'M6_ENVOLVENTE_PASIVA',
-      label: 'Priorizar abrigo térmico Passivhaus',
+      label: 'Priorizar el abrigo térmico',
       subtext: 'Aislamiento continuo de altas prestaciones y equipo térmico compacto',
       deltaPresupuesto: 0,
       deltaSemanas: 0,

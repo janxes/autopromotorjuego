@@ -7,7 +7,6 @@
 
   html {
     font-size: var(--app-font-size);
-    overflow-x: hidden;
     max-width: 100vw;
   }
 
@@ -17,7 +16,6 @@
     background-color: #f8fafc;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
     max-width: 100vw;
   }
 

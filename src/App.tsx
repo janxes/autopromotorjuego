@@ -26,6 +26,7 @@ import { CertificateModal } from './components/CertificateModal';
 import { useDecisionFeedback } from './hooks/useDecisionFeedback';
 import { ConsequenceFeedbackCard } from './components/ConsequenceFeedbackCard';
 import { WelcomeScreen } from './components/WelcomeScreen';
+import { HelpModal } from './components/HelpModal';
 import {
   Home,
   FileText,
@@ -151,6 +152,37 @@ export default function App() {
       // ignore
     }
   }, [gameMode, indicators, cardIndex, houseStage, history, isGameOver, playerProfile]);
+
+  // Help & accessibility guide modal
+  const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
+
+  // Ensure the top introduction of the scenario is immediately visible when advancing or switching cards
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    const t1 = requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+
+    const t2 = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const topAnchor = document.getElementById('scenario-top-anchor');
+      if (topAnchor) {
+        topAnchor.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+    }, 60);
+
+    return () => {
+      cancelAnimationFrame(t1);
+      clearTimeout(t2);
+    };
+  }, [cardIndex, pendingChoiceForTip, feedbackState.isActive]);
 
   const activeScenarios = gameMode === 'quick' ? REIGNS_SCENARIOS_QUICK : REIGNS_SCENARIOS_FULL;
   const currentCard = activeScenarios[cardIndex] || activeScenarios[0];
@@ -296,7 +328,7 @@ export default function App() {
     new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(val) + ' €';
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-700 selection:text-white w-full overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-700 selection:text-white w-full">
       {/* 4 Fixed Indicators Header with Animated Feedback & Progressive Counters */}
       <HUDHeader
         indicators={indicators}
@@ -329,6 +361,7 @@ export default function App() {
           setShowWelcome(true);
           setActiveTab('adventure');
         }}
+        onOpenHelp={() => setIsHelpOpen(true)}
       />
 
       {/* Main Container matching Header width */}
@@ -344,6 +377,7 @@ export default function App() {
             savedTurn={cardIndex + 1}
             totalTurns={REIGNS_SCENARIOS.length}
             onResume={() => setShowWelcome(false)}
+            onOpenHelp={() => setIsHelpOpen(true)}
           />
         ) : (
           <>
@@ -608,11 +642,28 @@ export default function App() {
         />
       )}
 
+      {/* Help & Accessibility Modal Guide */}
+      <HelpModal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        onOpenTextSize={() => {
+          setFontSize((prev) =>
+            prev === 'normal'
+              ? 'medium'
+              : prev === 'medium'
+              ? 'large'
+              : prev === 'large'
+              ? 'xlarge'
+              : 'normal'
+          );
+        }}
+      />
+
       {/* Footer strictly with requested text and matching width */}
       <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500 w-full">
         <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 text-center font-normal">
           <span>
-            La Odisea del Autopromotor · Asesoría pedagógica interactiva.
+            La Odisea del Autopromotor · El juego de construir tu mejor casa · Asesoría pedagógica interactiva.
           </span>
         </div>
       </footer>

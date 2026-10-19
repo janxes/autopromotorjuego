@@ -604,7 +604,26 @@ export const ConsequenceFeedbackCard: React.FC<ConsequenceFeedbackCardProps> = (
       {/* Advance button */}
       <div className="pt-1 w-full">
         <button
-          onClick={onAdvance}
+          onClick={() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            onAdvance();
+            requestAnimationFrame(() => {
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
+            });
+            setTimeout(() => {
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
+              const el = document.getElementById('scenario-top-anchor');
+              if (el) {
+                el.scrollIntoView({ behavior: 'auto', block: 'start' });
+              }
+            }, 50);
+          }}
           className="w-full py-2.5 sm:py-3 px-4 rounded-xl bg-slate-900 hover:bg-black text-white font-extrabold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition active:scale-98 cursor-pointer"
         >
           <span>{isComplete ? 'Avanzar al siguiente hito' : 'Saltar animación'}</span>

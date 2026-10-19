@@ -21,6 +21,9 @@ import {
   ExternalLink,
   Sparkles,
   Type,
+  ChevronDown,
+  ChevronUp,
+  HelpCircle,
 } from 'lucide-react';
 import { HighlightedIndicatorId, FeedbackTone } from '../hooks/useDecisionFeedback';
 
@@ -100,6 +103,7 @@ interface HUDHeaderProps {
     factura?: number;
   } | null;
   onOpenWelcome?: () => void;
+  onOpenHelp?: () => void;
 }
 
 export const HUDHeader: React.FC<HUDHeaderProps> = ({
@@ -119,10 +123,12 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
   highlightTone,
   activeDelta,
   onOpenWelcome,
+  onOpenHelp,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [textSizePopoverOpen, setTextSizePopoverOpen] = useState(false);
   const [restartConfirmOpen, setRestartConfirmOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const formatoEuros = (val: number) =>
     new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(val) + ' €';
@@ -157,7 +163,10 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 text-slate-900 shadow-xs w-full">
+    <header
+      style={{ position: 'sticky', top: 0 }}
+      className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 text-slate-900 shadow-xs w-full"
+    >
       {/* Top Bar matched to the exact width of the 'main' section */}
       <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-3 relative">
         {/* Brand / Logo */}
@@ -186,8 +195,21 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
           </div>
         </div>
 
-        {/* Right Header Action Buttons: Accessibility, New Game, and Menu */}
+        {/* Right Header Action Buttons: Help, Accessibility, New Game, and Menu */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Quick Help Guide Button */}
+          <button
+            onClick={onOpenHelp}
+            className="p-2 rounded-xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-800 transition flex items-center justify-center gap-1 focus:outline-hidden cursor-pointer"
+            title="Guía del juego: Cómo jugar y accesibilidad"
+            aria-label="Guía del juego: Cómo jugar y accesibilidad"
+          >
+            <HelpCircle className="w-4 h-4 text-emerald-700 shrink-0" />
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-800 hidden sm:inline">
+              Ayuda
+            </span>
+          </button>
+
           {/* Quick Text Size Accessibility Button */}
           <div className="relative">
             <button
@@ -401,8 +423,29 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
           {/* Dropdown Menu - safely bounded on mobile */}
           {menuOpen && (
             <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-14 sm:top-full mt-1.5 sm:mt-2 max-w-[calc(100vw-1.5rem)] sm:w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[85vh] overflow-y-auto mx-auto">
+              {/* Top featured: Help Guide */}
+              <div className="pb-2 border-b border-slate-100">
+                <button
+                  onClick={() => {
+                    onOpenHelp?.();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 p-2.5 rounded-xl text-xs font-bold transition text-left cursor-pointer bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200 shadow-2xs"
+                >
+                  <HelpCircle className="w-5 h-5 text-emerald-700 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <span className="block font-black text-emerald-950 leading-tight">
+                      ¿Cómo jugar? (Guía de Ayuda)
+                    </span>
+                    <span className="text-[10px] text-emerald-800 font-medium block truncate">
+                      Intención, mecánica y accesibilidad
+                    </span>
+                  </div>
+                </button>
+              </div>
+
               {/* Navigation items */}
-              <div className="space-y-1 pb-2 border-b border-slate-100">
+              <div className="space-y-1 py-2 border-b border-slate-100">
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 block">
                   Vistas y Simuladores
                 </span>
@@ -619,30 +662,34 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
       </div>
     </div>
 
-      {/* Four Reigns Indicators Always in the Same Position - matched to main section */}
-      <div className="w-full bg-slate-50/90 border-t border-slate-200 py-2">
-        <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+      {/* Four Reigns Indicators Always in the Same Position - strictly 1 single row */}
+      <div className="w-full bg-slate-50/95 border-t border-slate-200 py-1.5 shadow-xs">
+        {/* Selected target element: 1-row 4-column grid */}
+        <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 grid grid-cols-4 gap-1 sm:gap-2 items-stretch">
           {/* Indicator 1: Presupuesto */}
           <div
-            className={`bg-white p-2.5 rounded-xl border transition-all shadow-2xs relative ${
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={`bg-white p-1.5 sm:p-2 rounded-xl border transition-all shadow-2xs relative cursor-pointer select-none ${
               getIndicatorHaloClass('budget') ||
               (previewChoice?.deltaPresupuesto
                 ? previewChoice.deltaPresupuesto < 0
                   ? 'border-rose-400 ring-2 ring-rose-200'
                   : 'border-emerald-400 ring-2 ring-emerald-200'
-                : 'border-slate-200/80')
+                : 'border-slate-200/90 hover:border-slate-300')
             }`}
+            title={isExpanded ? 'Toca para compactar' : 'Toca para ver detalles de presupuesto'}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
-                <span>💰</span>
-                <span>Presupuesto</span>
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-0.5 sm:gap-1 min-w-0">
+                <span className="shrink-0">💰</span>
+                <span className="truncate hidden xs:inline sm:inline">Presupuesto</span>
+                <span className="truncate xs:hidden sm:hidden">Presup.</span>
               </span>
 
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'budget' && activeDelta?.presupuesto !== undefined ? (
                 <span
-                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-[9px] sm:text-xs font-black px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-md uppercase tracking-wider animate-item-pop shrink-0 ${
                     activeDelta.presupuesto < 0
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
@@ -650,11 +697,11 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                 >
                   {activeDelta.presupuesto < 0
                     ? `${activeDelta.presupuesto} €`
-                    : '✓ Blindado'}
+                    : '✓ OK'}
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
+                  className={`text-[9px] sm:text-xs font-extrabold px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-full shrink-0 ${
                     previewChoice.deltaPresupuesto < 0
                       ? 'bg-rose-100 text-rose-800'
                       : 'bg-emerald-100 text-emerald-800'
@@ -668,95 +715,103 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             </div>
 
             {/* Big Counter Value (ticking progressively) */}
-            <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5 leading-tight tracking-tight">
+            <div className="text-[11px] xs:text-xs sm:text-sm md:text-base font-black text-slate-900 mt-0.5 leading-tight tracking-tight truncate">
               {formatoEuros(animatedPresupuesto)}
             </div>
 
-            {/* Total / Deviation context */}
-            <div className="text-xs text-slate-600 truncate mt-0.5 font-medium">
-              {desvioEuros === 0 ? (
-                <span className="text-emerald-700 font-bold">Desvíos: 0 €</span>
-              ) : (
-                <span className="text-rose-700 font-bold">
-                  Desvío total: +{formatoEuros(desvioEuros)}
-                </span>
-              )}
-            </div>
+            {/* Expanded context */}
+            {isExpanded && (
+              <div className="text-[9px] sm:text-xs text-slate-600 truncate mt-1 pt-1 border-t border-slate-100 font-medium">
+                {desvioEuros === 0 ? (
+                  <span className="text-emerald-700 font-bold">Desvíos: 0 €</span>
+                ) : (
+                  <span className="text-rose-700 font-bold">
+                    +{formatoEuros(desvioEuros)}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Indicator 2: Plazos / Tiempo */}
           <div
-            className={`bg-white p-2.5 rounded-xl border transition-all shadow-2xs relative ${
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={`bg-white p-1.5 sm:p-2 rounded-xl border transition-all shadow-2xs relative cursor-pointer select-none ${
               getIndicatorHaloClass('weeks') ||
               (previewChoice?.deltaSemanas
                 ? previewChoice.deltaSemanas > 3
                   ? 'border-rose-400 ring-2 ring-rose-200'
                   : 'border-slate-400 ring-2 ring-slate-200'
-                : 'border-slate-200/80')
+                : 'border-slate-200/90 hover:border-slate-300')
             }`}
+            title={isExpanded ? 'Toca para compactar' : 'Toca para ver detalles de plazos'}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
-                <span>⏳</span>
-                <span>Plazo Obra</span>
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-0.5 sm:gap-1 min-w-0">
+                <span className="shrink-0">⏳</span>
+                <span className="truncate">Plazo</span>
               </span>
 
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'weeks' && activeDelta?.semanas !== undefined ? (
                 <span
-                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-[9px] sm:text-xs font-black px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-md uppercase tracking-wider animate-item-pop shrink-0 ${
                     activeDelta.semanas > 0
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
                   }`}
                 >
-                  {activeDelta.semanas > 0 ? `+${activeDelta.semanas} sem` : '0 sem'}
+                  {activeDelta.semanas > 0 ? `+${activeDelta.semanas}s` : '0s'}
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
+                  className={`text-[9px] sm:text-xs font-extrabold px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-full shrink-0 ${
                     previewChoice.deltaSemanas > 2
                       ? 'bg-rose-100 text-rose-800'
                       : 'bg-slate-100 text-slate-700'
                   }`}
                 >
-                  +{previewChoice.deltaSemanas} sem
+                  +{previewChoice.deltaSemanas}s
                 </span>
               ) : null}
             </div>
 
             {/* Big Counter Value */}
-            <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5 leading-tight tracking-tight">
-              Semana {animatedSemanas}
+            <div className="text-[11px] xs:text-xs sm:text-sm md:text-base font-black text-slate-900 mt-0.5 leading-tight tracking-tight truncate">
+              Sem. {animatedSemanas}
             </div>
 
-            {/* Total / Scheduled context */}
-            <div className="text-xs text-slate-600 truncate mt-0.5 font-medium">
-              <span>Previsto: {semanasPrevistas} sem</span>
-            </div>
+            {/* Expanded context */}
+            {isExpanded && (
+              <div className="text-[9px] sm:text-xs text-slate-600 truncate mt-1 pt-1 border-t border-slate-100 font-medium">
+                Previsto: {semanasPrevistas} sem
+              </div>
+            )}
           </div>
 
           {/* Indicator 3: Estrés / Bienestar */}
           <div
-            className={`bg-white p-2.5 rounded-xl border transition-all shadow-2xs relative ${
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={`bg-white p-1.5 sm:p-2 rounded-xl border transition-all shadow-2xs relative cursor-pointer select-none ${
               getIndicatorHaloClass('stress') ||
               (previewChoice?.deltaEstres
                 ? previewChoice.deltaEstres > 0
                   ? 'border-amber-400 ring-2 ring-amber-200'
                   : 'border-emerald-400 ring-2 ring-emerald-200'
-                : 'border-slate-200/80')
+                : 'border-slate-200/90 hover:border-slate-300')
             }`}
+            title={isExpanded ? 'Toca para compactar' : 'Toca para ver detalles de estrés'}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
-                <span>🧠</span>
-                <span>Estrés</span>
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-0.5 sm:gap-1 min-w-0">
+                <span className="shrink-0">🧠</span>
+                <span className="truncate">Estrés</span>
               </span>
 
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'stress' && activeDelta?.estres !== undefined ? (
                 <span
-                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-[9px] sm:text-xs font-black px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-md uppercase tracking-wider animate-item-pop shrink-0 ${
                     activeDelta.estres > 0
                       ? 'bg-amber-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
@@ -766,7 +821,7 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
+                  className={`text-[9px] sm:text-xs font-extrabold px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-full shrink-0 ${
                     previewChoice.deltaEstres > 0
                       ? 'bg-amber-100 text-amber-800'
                       : 'bg-emerald-100 text-emerald-800'
@@ -778,15 +833,15 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
             </div>
 
             {/* Big Counter Value with dynamic Progress Bar */}
-            <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5 leading-tight font-mono tracking-tight flex items-baseline justify-between">
+            <div className="text-[11px] xs:text-xs sm:text-sm md:text-base font-black text-slate-900 mt-0.5 leading-tight font-mono tracking-tight flex items-baseline justify-between truncate">
               <span>{animatedEstres}%</span>
-              <span className="text-xs font-sans font-bold text-slate-500">
-                {animatedEstres < 30 ? 'Bajo control' : animatedEstres < 60 ? 'Tensión' : 'Alerta'}
+              <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 hidden xs:inline">
+                {animatedEstres < 30 ? 'Zen' : animatedEstres < 60 ? 'Tensión' : 'Alerta'}
               </span>
             </div>
 
             {/* Dynamic visual progress bar for stress */}
-            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1 border border-slate-200/50">
+            <div className="w-full bg-slate-100 h-1 sm:h-1.5 rounded-full overflow-hidden mt-0.5 sm:mt-1 border border-slate-200/50">
               <div
                 className={`h-full rounded-full transition-all duration-300 ${
                   animatedEstres > 50
@@ -799,63 +854,84 @@ export const HUDHeader: React.FC<HUDHeaderProps> = ({
               />
             </div>
 
-            {/* ASCII bar */}
-            <div className="text-xs text-slate-500 truncate mt-0.5 font-mono">
-              {estresBarra}
-            </div>
+            {/* Expanded details */}
+            {isExpanded && (
+              <div className="text-[9px] sm:text-xs text-slate-500 truncate mt-1 pt-1 border-t border-slate-100 font-mono">
+                {estresBarra}
+              </div>
+            )}
           </div>
 
           {/* Indicator 4: Confort y Factura Passivhaus */}
           <div
-            className={`bg-white p-2.5 rounded-xl border transition-all shadow-2xs relative ${
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={`bg-white p-1.5 sm:p-2 rounded-xl border transition-all shadow-2xs relative cursor-pointer select-none ${
               getIndicatorHaloClass('energy') ||
               (previewChoice?.deltaFactura
                 ? previewChoice.deltaFactura > 0
                   ? 'border-rose-400 ring-2 ring-rose-200'
                   : 'border-emerald-400 ring-2 ring-emerald-200'
-                : 'border-slate-200/80')
+                : 'border-slate-200/90 hover:border-slate-300')
             }`}
+            title={isExpanded ? 'Toca para compactar' : 'Toca para ver detalles de energía'}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
-                <span>⚡</span>
-                <span>Energía</span>
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-0.5 sm:gap-1 min-w-0">
+                <span className="shrink-0">⚡</span>
+                <span className="truncate">Energía</span>
               </span>
 
               {/* Consequence Animated Delta Badge */}
               {highlightedIndicator === 'energy' && activeDelta?.factura !== undefined ? (
                 <span
-                  className={`text-xs font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider animate-item-pop ${
+                  className={`text-[9px] sm:text-xs font-black px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-md uppercase tracking-wider animate-item-pop shrink-0 ${
                     activeDelta.factura > 0
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-teal-600 text-white shadow-xs'
                   }`}
                 >
-                  {activeDelta.factura > 0 ? `+${activeDelta.factura} €` : '35 €/mes'}
+                  {activeDelta.factura > 0 ? `+${activeDelta.factura}€` : '35€/m'}
                 </span>
               ) : previewChoice ? (
                 <span
-                  className={`text-xs font-extrabold px-1.5 py-0.5 rounded-full ${
+                  className={`text-[9px] sm:text-xs font-extrabold px-1 sm:px-1.5 py-0.2 sm:py-0.5 rounded-full shrink-0 ${
                     previewChoice.deltaFactura > 0
                       ? 'bg-rose-100 text-rose-800'
                       : 'bg-emerald-100 text-emerald-800'
                   }`}
                 >
-                  {previewChoice.deltaFactura > 0 ? `+${previewChoice.deltaFactura} €` : 'Óptimo'}
+                  {previewChoice.deltaFactura > 0 ? `+${previewChoice.deltaFactura}€` : 'Óptimo'}
                 </span>
               ) : null}
             </div>
 
             {/* Big Counter Value */}
-            <div className="text-sm sm:text-base font-black text-emerald-800 mt-0.5 leading-tight tracking-tight">
-              {animatedFactura} €/mes
+            <div className="text-[11px] xs:text-xs sm:text-sm md:text-base font-black text-emerald-800 mt-0.5 leading-tight tracking-tight truncate">
+              {animatedFactura} €/m
             </div>
 
-            {/* Total / Airtightness context */}
-            <div className="text-xs text-slate-600 truncate mt-0.5 font-medium">
-              Hermetismo: {blowerDoorN50} ren/h
-            </div>
+            {/* Expanded details */}
+            {isExpanded && (
+              <div className="text-[9px] sm:text-xs text-slate-600 truncate mt-1 pt-1 border-t border-slate-100 font-medium">
+                n50: {blowerDoorN50} ren/h
+              </div>
+            )}
           </div>
+        </div>
+
+        {/* Optional expand / collapse interaction button */}
+        <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 flex items-center justify-between pt-0.5">
+          <span className="text-[8px] sm:text-[9px] text-slate-600 font-bold hidden sm:inline">
+            Marcador fijado arriba · Pulsa cualquier indicador para ver detalles
+          </span>
+          <button
+            type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-bold text-slate-500 hover:text-slate-800 transition py-0.5 px-1.5 rounded hover:bg-slate-200/50 cursor-pointer ml-auto"
+            title={isExpanded ? 'Compactar a 1 fila' : 'Ver marcador en grande con detalles'}
+          >
+            <span>{isExpanded ? '▲ Compactar a 1 fila' : '▼ Ver en grande con detalles'}</span>
+          </button>
         </div>
       </div>
     </header>

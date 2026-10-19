@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, RotateCcw, Check, Zap, Map } from 'lucide-react';
+import { ArrowRight, RotateCcw, Check, Zap, Map, HelpCircle } from 'lucide-react';
 import { GameMode } from '../types/game';
 
 interface WelcomeScreenProps {
@@ -9,6 +9,7 @@ interface WelcomeScreenProps {
   totalTurns?: number;
   currentMode?: GameMode;
   onResume?: () => void;
+  onOpenHelp?: () => void;
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
@@ -18,6 +19,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   totalTurns = 10,
   currentMode = 'full',
   onResume,
+  onOpenHelp,
 }) => {
   const [selectedMode, setSelectedMode] = useState<GameMode>(currentMode);
 
@@ -77,6 +79,31 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               «¿Está todo definido?»
             </p>
           </div>
+        </div>
+
+        {/* Introductory Help and Accessibility Link */}
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+          <div className="flex items-start gap-2.5">
+            <HelpCircle className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+            <div className="space-y-0.5">
+              <span className="text-xs sm:text-sm font-black text-emerald-950 block">
+                ¿Cómo se juega y cuál es la intención de este juego?
+              </span>
+              <p className="text-[11px] sm:text-xs text-emerald-900/90 font-medium leading-relaxed">
+                Descubre cómo tomar decisiones estratégicas de autopromoción y cómo utilizar las <strong>opciones de accesibilidad</strong> (como ampliar el tamaño de texto con el botón <strong>«A»</strong> o activar el modo de alto contraste).
+              </p>
+            </div>
+          </div>
+          {onOpenHelp && (
+            <button
+              type="button"
+              onClick={onOpenHelp}
+              className="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs transition shrink-0 cursor-pointer"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Ver guía de ayuda</span>
+            </button>
+          )}
         </div>
 
         <p>
